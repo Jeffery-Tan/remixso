@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* ====== Tailwind v4 class-based 深色模式 ====== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ====== 设计令牌 ====== */
+@layer base {
+  :root {
+    --primary: #7c3aed;
+    --primary-hover: #6d28d9;
+    --primary-container: #7c3aed;
+    --on-primary: #ffffff;
+    --primary-fixed: #eaddff;
+    --primary-fixed-dim: #d2bbff;
+
+    --background: #f7f9fb;
+    --foreground: #191c1e;
+    --surface: #f7f9fb;
+    --surface-dim: #d8dadc;
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: #f2f4f6;
+    --surface-container: #eceef0;
+    --surface-container-high: #e6e8ea;
+
+    --muted: #f2f4f6;
+    --muted-foreground: #4a4455;
+    --on-surface-variant: #4a4455;
+    --outline: #7b7487;
+    --outline-variant: #ccc3d8;
+    --border: #ccc3d8;
+
+    --ring: #7c3aed;
+    --destructive: #ba1a1a;
+    --destructive-foreground: #ffffff;
+    --primary-foreground: #ffffff;
+    --error-container: #ffdad6;
+    --on-error-container: #93000a;
+    --surface-bright: #ffffff;
+
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-headline: "Epilogue", system-ui, sans-serif;
+  }
+
+  .dark {
+    --primary: #8b5cf6;
+    --primary-hover: #7c3aed;
+    --primary-container: #7c3aed;
+    --on-primary: #ffffff;
+    --primary-fixed: #2d1b69;
+    --primary-fixed-dim: #3d2b7a;
+
+    --background: #0f1114;
+    --foreground: #e0e4e8;
+    --surface: #14171c;
+    --surface-dim: #2c3038;
+    --surface-container-lowest: #0a0d10;
+    --surface-container-low: #181b20;
+    --surface-container: #1e2228;
+    --surface-container-high: #242830;
+    --surface-bright: #2c3038;
+
+    --muted: #1a1d24;
+    --muted-foreground: #b0a8c0;
+    --on-surface-variant: #b0a8c0;
+    --outline: #8c8498;
+    --outline-variant: #3d3648;
+    --border: #3d3648;
+
+    --ring: #8b5cf6;
+    --destructive: #ff6b6b;
+    --destructive-foreground: #0f1114;
+    --primary-foreground: #ffffff;
+    --error-container: #410002;
+    --on-error-container: #ffdad6;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--primary-fixed);
+    color: var(--foreground);
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d8dadc; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #ccc3d8; }
+
+  .dark ::-webkit-scrollbar-thumb { background: #3d3648; }
+  .dark ::-webkit-scrollbar-thumb:hover { background: #4d4658; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ====== Tailwind v4 主题映射 ====== */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-bright: var(--surface-bright);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary: var(--on-primary);
+  --color-primary-fixed: var(--primary-fixed);
+  --color-primary-fixed-dim: var(--primary-fixed-dim);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+  --font-sans: var(--font-sans);
+  --font-headline: var(--font-headline);
+
+  --animate-blob: blob 7s infinite;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out both;
+  --animate-fade-in: fade-in 0.5s ease-out both;
+  --animate-scale-in: scale-in 0.3s ease-out both;
+  --animate-slide-up: slide-up 0.3s ease-out both;
+
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ====== 设计系统工具类 ====== */
+@layer utilities {
+  /* 网格渐变背景 */
+  .mesh-gradient {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(at 40% 20%, hsla(267, 88%, 85%, 0.5) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsla(280, 100%, 89%, 0.5) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(267, 88%, 85%, 0.4) 0px, transparent 50%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 玻璃拟态卡片 */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(204, 195, 216, 0.4);
+  }
+
+  .dark .glass-card {
+    background: rgba(30, 34, 40, 0.6);
+    border: 1px solid rgba(61, 54, 72, 0.5);
+  }
+
+  .glass-card-strong {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(204, 195, 216, 0.5);
+  }
+
+  .dark .glass-card-strong {
+    background: rgba(30, 34, 40, 0.8);
+    border: 1px solid rgba(61, 54, 72, 0.6);
+  }
+
+  /* 网格渐变背景 */
+  .dark .mesh-gradient {
+    background-image:
+      radial-gradient(at 40% 20%, hsla(267, 50%, 25%, 0.35) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsla(280, 40%, 30%, 0.35) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(267, 40%, 30%, 0.25) 0px, transparent 50%);
+  }
+
+  /* 紫色发光阴影 */
+  .glow-purple {
+    box-shadow: 0 0 40px -10px rgba(124, 58, 237, 0.3);
+  }
+
+  .dark .glow-purple {
+    box-shadow: 0 0 40px -10px rgba(139, 92, 246, 0.25);
+  }
+
+  .glow-purple-sm {
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+  }
+
+  .dark .glow-purple-sm {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.35);
+  }
+}

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <!-- 白底 -->
+  <rect width="1024" height="1024" fill="white"/>
+
+  <!-- 偏移黑色硬阴影（棱镜的影子，右下偏移） -->
+  <polygon points="340,390 340,650 530,520" fill="#1A1A1A"/>
+
+  <!-- 棱镜三角（白填充 + 粗黑边） -->
+  <polygon points="320,372 320,632 510,502" fill="#F5F5F5" stroke="#1A1A1A" stroke-width="14" stroke-linejoin="round"/>
+
+  <!-- 入射光束（从左射入的粗白光线 + 黑边） -->
+  <path d="M 60 502 L 310 502" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round"/>
+  <path d="M 60 502 L 310 502" stroke="white" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- 六色波浪光谱线，从棱镜右侧扇形散开 -->
+
+  <!-- 红 -->
+  <path d="M 465 438 C 580 400, 720 260, 880 200"
+        stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M 465 438 C 580 400, 720 260, 880 200"
+        stroke="#FF3860" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- 橙 -->
+  <path d="M 478 456 C 600 430, 740 320, 900 290"
+        stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M 478 456 C 600 430, 740 320, 900 290"
+        stroke="#FF6B00" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- 黄 -->
+  <path d="M 488 476 C 610 460, 750 400, 920 400"
+        stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M 488 476 C 610 460, 750 400, 920 400"
+        stroke="#FFD600" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- 绿 -->
+  <path d="M 488 508 C 610 530, 750 502, 910 530"
+        stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M 488 508 C 610 530, 750 502, 910 530"
+        stroke="#00E676" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- 蓝 -->
+  <path d="M 478 535 C 600 560, 740 610, 890 650"
+        stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M 478 535 C 600 560, 740 610, 890 650"
+        stroke="#2979FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- 紫 -->
+  <path d="M 465 555 C 580 590, 720 700, 870 760"
+        stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M 465 555 C 580 590, 720 700, 870 760"
+        stroke="#D500F9" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- 棱镜入口光点 -->
+  <circle cx="310" cy="502" r="10" fill="#1A1A1A"/>
+</svg>

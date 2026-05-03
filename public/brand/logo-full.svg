@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="80" viewBox="0 0 600 80" fill="none">
+  <!-- 棱镜图标（缩放嵌入） -->
+  <g transform="translate(4, 4) scale(0.07)">
+    <rect width="1024" height="1024" fill="white"/>
+    <polygon points="340,390 340,650 530,520" fill="#1A1A1A"/>
+    <polygon points="320,372 320,632 510,502" fill="#F5F5F5" stroke="#1A1A1A" stroke-width="14" stroke-linejoin="round"/>
+    <path d="M 60 502 L 310 502" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round"/>
+    <path d="M 60 502 L 310 502" stroke="white" stroke-width="16" stroke-linecap="round"/>
+    <path d="M 465 438 C 580 400, 720 260, 880 200" stroke="#FF3860" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M 478 456 C 600 430, 740 320, 900 290" stroke="#FF6B00" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M 488 476 C 610 460, 750 400, 920 400" stroke="#FFD600" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M 488 508 C 610 530, 750 502, 910 530" stroke="#00E676" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M 478 535 C 600 560, 740 610, 890 650" stroke="#2979FF" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M 465 555 C 580 590, 720 700, 870 760" stroke="#D500F9" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <circle cx="310" cy="502" r="10" fill="#1A1A1A"/>
+  </g>
+
+  <!-- Remix 粗黑体 -->
+  <text x="86" y="57" font-family="Epilogue, sans-serif" font-weight="800" font-size="44" fill="#1A1A1A" letter-spacing="-0.5">Remix</text>
+  <!-- So 细体 + 强调色 -->
+  <text x="250" y="57" font-family="Epilogue, sans-serif" font-weight="400" font-size="44" fill="#6366F1" letter-spacing="-0.5">So</text>
+</svg>

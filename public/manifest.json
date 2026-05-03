@@ -1,0 +1,23 @@
+{
+  "name": "RemixSo — AI Content Repurposing",
+  "short_name": "RemixSo",
+  "description": "Turn one article into platform-perfect posts for X, LinkedIn, Instagram, email, TikTok and YouTube Shorts.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#FEFCFB",
+  "theme_color": "#6366F1",
+  "icons": [
+    {
+      "src": "/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

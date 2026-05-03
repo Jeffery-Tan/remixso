@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RemixSo - Stop rewriting. Start creating.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800&amp;family=Inter:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-container-low": "#f2f4f6",
+                "on-tertiary-fixed-variant": "#7a0092",
+                "secondary-fixed": "#dae2fd",
+                "on-tertiary-container": "#ffdaff",
+                "primary-fixed-dim": "#d2bbff",
+                "tertiary-fixed-dim": "#f6adff",
+                "tertiary-container": "#ad00ce",
+                "surface-dim": "#d8dadc",
+                "surface-variant": "#e0e3e5",
+                "surface-container-high": "#e6e8ea",
+                "inverse-primary": "#d2bbff",
+                "outline-variant": "#ccc3d8",
+                "surface-bright": "#f7f9fb",
+                "on-secondary": "#ffffff",
+                "primary-container": "#7c3aed",
+                "background": "#f7f9fb",
+                "on-surface-variant": "#4a4455",
+                "on-primary": "#ffffff",
+                "inverse-surface": "#2d3133",
+                "tertiary-fixed": "#fed6ff",
+                "on-secondary-fixed-variant": "#3f465c",
+                "tertiary": "#8700a1",
+                "surface-container-highest": "#e0e3e5",
+                "on-tertiary": "#ffffff",
+                "surface-container": "#eceef0",
+                "surface": "#f7f9fb",
+                "surface-tint": "#732ee4",
+                "outline": "#7b7487",
+                "surface-container-lowest": "#ffffff",
+                "on-primary-container": "#ede0ff",
+                "on-surface": "#191c1e",
+                "on-tertiary-fixed": "#350040",
+                "on-secondary-container": "#5c647a",
+                "secondary-container": "#dae2fd",
+                "on-primary-fixed": "#25005a",
+                "inverse-on-surface": "#eff1f3",
+                "on-error": "#ffffff",
+                "on-primary-fixed-variant": "#5a00c6",
+                "on-error-container": "#93000a",
+                "on-secondary-fixed": "#131b2e",
+                "primary": "#630ed4",
+                "primary-fixed": "#eaddff",
+                "on-background": "#191c1e",
+                "secondary": "#565e74",
+                "secondary-fixed-dim": "#bec6e0",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "unit": "4px",
+                "gutter": "24px",
+                "margin": "48px",
+                "container-max": "1440px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Epilogue"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-caps": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Epilogue"
+                ],
+                "headline-xl": [
+                        "Epilogue"
+                ]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "52px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.15em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "38px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-xl": [
+                        "84px",
+                        {
+                                "lineHeight": "90px",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "800"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .mesh-gradient {
+            background-image: 
+                radial-gradient(at 40% 20%, hsla(267,88%,85%,0.6) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(280,100%,89%,0.6) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(267,88%,85%,0.6) 0px, transparent 50%);
+            filter: blur(40px);
+            z-index: -1;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-fixed selection:text-primary min-h-screen flex flex-col relative overflow-x-hidden">
+<div class="fixed inset-0 w-full h-full mesh-gradient pointer-events-none"></div>
+<!-- TopAppBar -->
+<header class="font-headline-lg antialiased full-width top-0 z-50 flex justify-between items-center px-gutter py-8 max-w-container-max mx-auto w-full bg-transparent">
+<div class="flex items-center gap-12">
+<a class="text-2xl font-bold tracking-tighter text-on-background flex items-center gap-2 hover:opacity-80 transition-all" href="#">
+<span class="text-primary text-xl">✦</span> RemixSo
+        </a>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#platform">Platform</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#features">Features</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#pricing">Pricing</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#showcase">Showcase</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<a class="font-body-md font-medium text-on-surface-variant hover:text-on-background transition-all" href="#">Login</a>
+<a class="bg-on-background text-background font-label-caps uppercase px-6 py-3 rounded-full hover:bg-on-surface-variant transition-all tracking-widest text-xs" href="#">Get Started</a>
+</div>
+</header>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="py-32 px-gutter max-w-container-max mx-auto text-center flex flex-col items-center justify-center relative">
+<span class="text-primary text-2xl mb-6">✦</span>
+<h1 class="font-headline-xl text-headline-xl text-on-background mb-8 max-w-5xl tracking-tighter leading-tight">Stop rewriting.<br/><span class="text-primary italic font-light">Start creating.</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-16 max-w-2xl font-light leading-relaxed">Paste your idea once, and let AI adapt it perfectly for every platform in seconds. An elegant solution for modern creators.</p>
+<div class="w-full max-w-3xl bg-surface/40 backdrop-blur-xl border border-outline-variant/30 rounded-2xl shadow-sm overflow-hidden transition-all text-left relative p-2">
+<textarea class="w-full h-40 p-6 bg-transparent font-body-md text-on-background resize-none border-none focus:ring-0 placeholder:text-on-surface-variant/40 font-light" placeholder="Paste your blog post, script, or random thought here..."></textarea>
+<div class="px-6 py-4 flex justify-between items-center">
+<span class="font-body-md text-sm text-on-surface-variant/60 font-light tracking-wide">0 characters</span>
+<button class="bg-primary/10 backdrop-blur-md border border-primary/20 text-primary font-label-caps px-8 py-3 rounded-full hover:bg-primary/20 transition-all flex items-center gap-3 uppercase tracking-widest text-xs">
+<span class="text-sm">✦</span>
+                        Remix Now
+                    </button>
+</div>
+</div>
+</section>
+<!-- Platform Grid Section -->
+<section class="py-24 px-gutter relative" id="platform">
+<div class="max-w-container-max mx-auto text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-16 tracking-tight">One input. Everywhere.</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+<!-- Platform Item -->
+<div class="flex flex-col items-center justify-center p-10 border border-outline-variant/30 rounded-2xl bg-surface/30 backdrop-blur-sm hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-background/70 group-hover:text-primary mb-6 font-light transition-colors">chat</span>
+<span class="font-label-caps uppercase tracking-widest text-on-background/80">X (Twitter)</span>
+</div>
+<!-- Platform Item -->
+<div class="flex flex-col items-center justify-center p-10 border border-outline-variant/30 rounded-2xl bg-surface/30 backdrop-blur-sm hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-background/70 group-hover:text-primary mb-6 font-light transition-colors">work</span>
+<span class="font-label-caps uppercase tracking-widest text-on-background/80">LinkedIn</span>
+</div>
+<!-- Platform Item -->
+<div class="flex flex-col items-center justify-center p-10 border border-outline-variant/30 rounded-2xl bg-surface/30 backdrop-blur-sm hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-background/70 group-hover:text-primary mb-6 font-light transition-colors">photo_camera</span>
+<span class="font-label-caps uppercase tracking-widest text-on-background/80">Instagram</span>
+</div>
+<!-- Platform Item -->
+<div class="flex flex-col items-center justify-center p-10 border border-outline-variant/30 rounded-2xl bg-surface/30 backdrop-blur-sm hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-background/70 group-hover:text-primary mb-6 font-light transition-colors">mail</span>
+<span class="font-label-caps uppercase tracking-widest text-on-background/80">Newsletter</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-32 px-gutter max-w-container-max mx-auto" id="features">
+<div class="grid md:grid-cols-3 gap-8 items-start">
+<!-- Feature 1 -->
+<div class="p-10 border border-outline-variant/30 rounded-3xl bg-surface/40 backdrop-blur-sm flex flex-col mt-12">
+<span class="text-primary text-xl mb-8">✦</span>
+<h3 class="font-headline-md text-headline-md text-on-background mb-4 tracking-tight">Keep Your Voice</h3>
+<p class="font-body-md text-on-surface-variant font-light leading-relaxed">Train the AI on your past content to ensure every generated post sounds authentically like you, not a robot.</p>
+</div>
+<!-- Feature 2 -->
+<div class="p-10 border border-outline-variant/30 rounded-3xl bg-surface/40 backdrop-blur-sm flex flex-col mb-12">
+<span class="text-primary text-xl mb-8">✦</span>
+<h3 class="font-headline-md text-headline-md text-on-background mb-4 tracking-tight">One Click, Six Platforms</h3>
+<p class="font-body-md text-on-surface-variant font-light leading-relaxed">Automatically format character limits, hashtags, and line breaks specific to X, LinkedIn, Threads, and more.</p>
+</div>
+<!-- Feature 3 -->
+<div class="p-10 border border-outline-variant/30 rounded-3xl bg-surface/40 backdrop-blur-sm flex flex-col mt-24">
+<span class="text-primary text-xl mb-8">✦</span>
+<h3 class="font-headline-md text-headline-md text-on-background mb-4 tracking-tight">Edit Before You Post</h3>
+<p class="font-body-md text-on-surface-variant font-light leading-relaxed">Review, tweak, and refine content in our side-by-side editor before exporting to your scheduling tool.</p>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-32 px-gutter relative" id="pricing">
+<div class="max-w-5xl mx-auto text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-20 tracking-tight">Simple, transparent pricing.</h2>
+<div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto items-center">
+<!-- Starter Plan -->
+<div class="p-12 border border-outline-variant/30 rounded-3xl bg-surface/40 backdrop-blur-sm flex flex-col text-left">
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Starter</h3>
+<p class="font-body-md text-on-surface-variant mb-10 font-light">For casual creators.</p>
+<div class="mb-10">
+<span class="font-headline-lg text-headline-lg text-on-background">$0</span>
+<span class="font-body-md text-on-surface-variant font-light">/mo</span>
+</div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-4 font-body-md text-on-background font-light">
+<span class="text-primary text-sm">✦</span>
+                                10 Remixes per month
+                            </li>
+<li class="flex items-center gap-4 font-body-md text-on-background font-light">
+<span class="text-primary text-sm">✦</span>
+                                Basic templates
+                            </li>
+</ul>
+<button class="w-full py-4 px-6 border border-outline-variant/50 text-on-background font-label-caps uppercase tracking-widest text-xs rounded-full hover:bg-surface-variant/50 transition-colors">Start for free</button>
+</div>
+<!-- Pro Plan -->
+<div class="p-12 border border-primary/20 rounded-3xl bg-[#191c1e] text-white flex flex-col text-left shadow-[0_0_40px_-10px_rgba(124,58,237,0.3)] relative transform scale-105 z-10">
+<div class="absolute top-0 right-8 -translate-y-1/2">
+<span class="bg-primary text-white font-label-caps px-4 py-2 rounded-full text-[10px] uppercase tracking-widest border border-primary-fixed/30">Most Popular</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-2">Creator Pro</h3>
+<p class="font-body-md text-white/60 mb-10 font-light">Everything you need to scale.</p>
+<div class="mb-10">
+<span class="font-headline-lg text-headline-lg text-white">$19</span>
+<span class="font-body-md text-white/60 font-light">/mo</span>
+</div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-4 font-body-md text-white font-light">
+<span class="text-primary-fixed text-sm">✦</span>
+                                Unlimited Remixes
+                            </li>
+<li class="flex items-center gap-4 font-body-md text-white font-light">
+<span class="text-primary-fixed text-sm">✦</span>
+                                Custom Voice Training
+                            </li>
+<li class="flex items-center gap-4 font-body-md text-white font-light">
+<span class="text-primary-fixed text-sm">✦</span>
+                                Priority Support
+                            </li>
+</ul>
+<button class="w-full py-4 px-6 bg-primary text-white font-label-caps uppercase tracking-widest text-xs rounded-full hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20">Upgrade to Pro</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="font-label-caps uppercase tracking-widest text-[10px] w-full py-16 border-t border-outline-variant/20 max-w-container-max mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-8 text-on-surface-variant/60">
+<div>
+            © 2024 RemixSo AI. Built for creators.
+        </div>
+<div class="flex gap-8">
+<a class="hover:text-primary transition-all" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-all" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-all" href="#">Twitter</a>
+<a class="hover:text-primary transition-all" href="#">Status</a>
+</div>
+</footer>
+</body></html>

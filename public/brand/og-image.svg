@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <!-- 背景：暖白 -->
+  <rect width="1200" height="630" fill="#FEFCFB"/>
+
+  <!-- 底部强调色条 -->
+  <rect x="0" y="600" width="1200" height="30" fill="#1A1A1A"/>
+
+  <!-- ====== 棱镜图标区域 ====== -->
+  <g transform="translate(160, 160) scale(0.35)">
+    <!-- 偏移黑色硬阴影 -->
+    <polygon points="340,390 340,650 530,520" fill="#1A1A1A"/>
+    <!-- 棱镜三角 -->
+    <polygon points="320,372 320,632 510,502" fill="white" stroke="#1A1A1A" stroke-width="14" stroke-linejoin="round"/>
+    <!-- 入射光束 -->
+    <path d="M 60 502 L 310 502" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round"/>
+    <path d="M 60 502 L 310 502" stroke="white" stroke-width="16" stroke-linecap="round"/>
+    <!-- 六色光谱 -->
+    <path d="M 465 438 C 580 400, 720 260, 880 200" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+    <path d="M 465 438 C 580 400, 720 260, 880 200" stroke="#FF3860" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 478 456 C 600 430, 740 320, 900 290" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+    <path d="M 478 456 C 600 430, 740 320, 900 290" stroke="#FF6B00" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 488 476 C 610 460, 750 400, 920 400" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+    <path d="M 488 476 C 610 460, 750 400, 920 400" stroke="#FFD600" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 488 508 C 610 530, 750 502, 910 530" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+    <path d="M 488 508 C 610 530, 750 502, 910 530" stroke="#00E676" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 478 535 C 600 560, 740 610, 890 650" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+    <path d="M 478 535 C 600 560, 740 610, 890 650" stroke="#2979FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M 465 555 C 580 590, 720 700, 870 760" stroke="#1A1A1A" stroke-width="24" stroke-linecap="round" fill="none"/>
+    <path d="M 465 555 C 580 590, 720 700, 870 760" stroke="#D500F9" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <circle cx="310" cy="502" r="10" fill="#1A1A1A"/>
+  </g>
+
+  <!-- ====== 文字区域 ====== -->
+  <!-- 主标题 -->
+  <text x="160" y="440" font-family="'Epilogue','Inter','Helvetica Neue',sans-serif" font-weight="800" font-size="88" fill="#1A1A1A" letter-spacing="-2">
+    Remix
+    <tspan font-weight="400" fill="#6366F1">So</tspan>
+  </text>
+
+  <!-- 副标题 -->
+  <text x="164" y="510" font-family="'Inter','Helvetica Neue',sans-serif" font-weight="400" font-size="32" fill="#6B7280" letter-spacing="0">
+    Stop rewriting. Start creating.
+  </text>
+
+  <!-- 描述文字 -->
+  <text x="164" y="554" font-family="'Inter','Helvetica Neue',sans-serif" font-weight="400" font-size="18" fill="#9CA3AF" letter-spacing="0">
+    One article → AI-powered posts for X, LinkedIn, Instagram, email, TikTok &amp; YouTube Shorts.
+  </text>
+</svg>

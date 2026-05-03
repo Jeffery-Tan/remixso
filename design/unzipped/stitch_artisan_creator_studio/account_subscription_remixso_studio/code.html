@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RemixSo - Account &amp; Billing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e0e3e5",
+                        "on-surface": "#191c1e",
+                        "on-secondary-container": "#5c647a",
+                        "on-tertiary-fixed": "#350040",
+                        "on-primary-container": "#ede0ff",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#fed6ff",
+                        "tertiary": "#8700a1",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#ad00ce",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "error": "#ba1a1a",
+                        "surface": "#f7f9fb",
+                        "on-tertiary-fixed-variant": "#7a0092",
+                        "tertiary-fixed-dim": "#f6adff",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "background": "#f7f9fb",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-container": "#dae2fd",
+                        "on-surface-variant": "#4a4455",
+                        "primary-fixed": "#eaddff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "secondary-fixed": "#dae2fd",
+                        "inverse-surface": "#2d3133",
+                        "outline": "#7b7487",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "primary-container": "#7c3aed",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container": "#eceef0",
+                        "outline-variant": "#ccc3d8",
+                        "on-primary-fixed": "#25005a",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#d2bbff",
+                        "surface-variant": "#e0e3e5",
+                        "secondary": "#565e74",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "surface-tint": "#732ee4",
+                        "primary": "#630ed4",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-tertiary-container": "#ffdaff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "48px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Epilogue"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Epilogue"],
+                        "headline-md": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-xl": ["84px", {"lineHeight": "90px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "headline-md": ["32px", {"lineHeight": "38px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.surface'); color: theme('colors.on-surface'); }
+    </style>
+</head>
+<body class="antialiased min-h-screen font-body-md text-body-md relative overflow-x-hidden">
+<!-- Ambient Mesh Gradient Background -->
+<div class="fixed inset-0 z-0 pointer-events-none opacity-40">
+<div class="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] rounded-full bg-gradient-to-br from-tertiary-fixed-dim to-transparent blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-primary-fixed to-transparent blur-[120px]"></div>
+</div>
+<!-- TopAppBar Component -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-12 h-20 bg-white/10 dark:bg-slate-950/20 backdrop-blur-2xl font-epilogue tracking-tight antialiased border-b border-slate-200/50 dark:border-white/10 shadow-[0_0_20px_rgba(124,58,237,0.05)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black tracking-tighter uppercase text-slate-900 dark:text-white font-epilogue">RemixSo</span>
+<div class="hidden md:flex items-center gap-6 ml-8">
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-violet-500 dark:hover:text-violet-300 transition-all duration-300" href="#">Features</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-violet-500 dark:hover:text-violet-300 transition-all duration-300" href="#">Pricing</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-violet-500 dark:hover:text-violet-300 transition-all duration-300" href="#">Showcase</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search Icon (Search Bar on_right implied) -->
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 font-medium hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-violet-600 dark:text-violet-400 font-bold px-4 py-2 rounded-lg bg-primary-fixed/20 hover:bg-primary-fixed/40 transition-colors active:scale-95 transition-transform duration-200">
+                ✦ Remix
+            </button>
+</div>
+</nav>
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-8 z-40 bg-white/5 dark:bg-slate-950/10 backdrop-blur-3xl h-screen w-72 border-r border-slate-200/40 dark:border-white/5 shadow-none pt-28">
+<div class="px-8 mb-10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="Creator Profile" class="w-full h-full object-cover" data-alt="A high-fashion editorial portrait of a young creative professional with a confident, serene expression. The lighting is soft and luminous, casting subtle shadows that highlight the subject's features. The background is a clean, minimalist off-white studio setting, fitting perfectly into a premium light-mode digital workspace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOZKMZrd1_0Eo5S2t32yalmEHF4CBuVbMDpqxIsIzItdQPNukyAGvSrMQ8X8MHNVm4Aq9kLaay051qaf4hux-utjDyUmiinWC0zc5lfs5ZbRI6lUO3SvzNW6vsAFmwyHDevjsKxxLVjRtXiCFY6uwMYv6eC1qQNvs5vZ-XUxTjc7c71-y8Gb0Dub-6_zaukw8ClJpBuSjlPN9Bc3wk5ovxIGEfMKfM3qRpi4FrujoaqIng0zEv6e7lUNm2BfWfErquSXLcvZwcJjw"/>
+</div>
+<div>
+<h2 class="font-epilogue text-sm font-medium tracking-wide text-on-surface">Creator Studio</h2>
+<p class="font-epilogue text-xs tracking-wide text-primary">Pro Plan</p>
+</div>
+</div>
+<div class="px-6 mb-8">
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-lg font-epilogue text-sm font-medium tracking-wide flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(99,14,212,0.4)] transition-all active:translate-x-1 transition-transform">
+                ✦ New Project
+            </button>
+</div>
+<nav class="flex-1 px-4 flex flex-col gap-2 font-epilogue text-sm font-medium tracking-wide">
+<a class="flex items-center gap-3 py-2 text-slate-500 dark:text-slate-400 pl-4 hover:bg-slate-100/50 dark:hover:bg-white/5 hover:text-violet-500 transition-all rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 py-2 text-slate-500 dark:text-slate-400 pl-4 hover:bg-slate-100/50 dark:hover:bg-white/5 hover:text-violet-500 transition-all rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">folder_special</span> My Projects
+            </a>
+<a class="flex items-center gap-3 py-2 text-slate-500 dark:text-slate-400 pl-4 hover:bg-slate-100/50 dark:hover:bg-white/5 hover:text-violet-500 transition-all rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">auto_fix_high</span> Remix Studio
+            </a>
+<a class="flex items-center gap-3 py-2 text-slate-500 dark:text-slate-400 pl-4 hover:bg-slate-100/50 dark:hover:bg-white/5 hover:text-violet-500 transition-all rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span> Insights
+            </a>
+</nav>
+<div class="mt-auto px-4 flex flex-col gap-2 font-epilogue text-sm font-medium tracking-wide border-t border-slate-200/40 dark:border-white/5 pt-6">
+<a class="flex items-center gap-3 py-2 text-violet-600 dark:text-violet-400 font-bold border-l-2 border-violet-600 dark:border-violet-400 pl-4 bg-violet-50/10 rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span> Settings
+            </a>
+<a class="flex items-center gap-3 py-2 text-slate-500 dark:text-slate-400 pl-4 hover:bg-slate-100/50 dark:hover:bg-white/5 hover:text-violet-500 transition-all rounded-r-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">help_outline</span> Support
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-28 px-margin pb-margin relative z-10 min-h-screen flex flex-col">
+<div class="max-w-container-max w-full mx-auto flex-1 flex flex-col">
+<header class="mb-12">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Account &amp; Billing</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Manage your studio subscription, track generation limits, and update payment details in one place.</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Subscription Glass Card -->
+<section class="col-span-12 lg:col-span-7 bg-surface-container-lowest/60 backdrop-blur-[40px] border border-outline-variant/40 rounded-xl p-10 relative overflow-hidden group">
+<!-- Internal Glow -->
+<div class="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/20 transition-all duration-700"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-3">
+                                    Pro Plan <span class="text-primary text-2xl">✦</span>
+</h2>
+</div>
+<div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-full font-label-caps text-label-caps border border-primary/20">
+<span class="material-symbols-outlined text-[16px] animate-pulse">check_circle</span> Active
+                            </div>
+</div>
+<div class="mb-12">
+<div class="font-headline-xl text-headline-xl text-on-surface flex items-baseline">
+                                $19<span class="font-body-lg text-body-lg text-on-surface-variant ml-2 tracking-normal">/ month</span>
+</div>
+<p class="font-body-md text-body-md text-outline mt-2">Next billing date is October 24, 2024</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 rounded-lg hover:shadow-[0_0_20px_rgba(99,14,212,0.4)] hover:bg-surface-tint transition-all uppercase tracking-widest">
+                                Manage Subscription
+                            </button>
+<button class="bg-transparent text-on-surface border border-outline-variant font-label-caps text-label-caps px-8 py-4 rounded-lg hover:bg-surface-container transition-all uppercase tracking-widest">
+                                View Invoices
+                            </button>
+</div>
+</div>
+</section>
+<!-- Usage High Contrast Card -->
+<section class="col-span-12 lg:col-span-5 bg-on-surface text-surface border border-on-surface rounded-xl p-10 flex flex-col justify-between relative overflow-hidden">
+<!-- Subtle texture overlay -->
+<div class="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-surface-container-lowest mb-2">Usage Limits</h3>
+<p class="font-body-md text-body-md text-outline-variant mb-10">High-fidelity content generations</p>
+<div class="mb-4">
+<div class="flex justify-between items-end mb-3">
+<span class="font-headline-md text-headline-md text-surface-container-lowest leading-none">Unlimited</span>
+<span class="font-label-caps text-label-caps text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-3 py-1 rounded border border-tertiary-fixed-dim/20 tracking-widest">✦ PRO PERK</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-inverse-surface rounded-full overflow-hidden border border-outline-variant/20 p-0.5">
+<div class="w-full h-full bg-gradient-to-r from-primary-fixed-dim via-tertiary-fixed-dim to-tertiary rounded-full shadow-[0_0_10px_rgba(254,214,255,0.5)]"></div>
+</div>
+</div>
+</div>
+<div class="relative z-10 mt-12 pt-6 border-t border-outline-variant/20 flex justify-between items-center">
+<span class="font-body-md text-body-md text-outline-variant">Standard generations</span>
+<span class="font-body-md text-body-md text-surface-container-lowest font-medium">Unlimited</span>
+</div>
+</section>
+<!-- Billing Details List -->
+<section class="col-span-12 mt-4 bg-surface-container-lowest/40 backdrop-blur-xl border border-outline-variant/30 rounded-xl">
+<div class="p-8 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Payment Method</h3>
+<button class="font-label-caps text-label-caps text-primary hover:text-surface-tint uppercase tracking-widest">Update</button>
+</div>
+<div class="p-8 flex items-center gap-6">
+<div class="w-16 h-12 bg-surface-container-high rounded border border-outline-variant/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">credit_card</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">•••• •••• •••• 4242</p>
+<p class="font-body-md text-body-md text-outline mt-1">Expires 12/2025</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>
