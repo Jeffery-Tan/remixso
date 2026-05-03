@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 // GET /api/debug-stripe —— 调试端点，查看 Stripe 和 Supabase 状态
 // 仅开发环境使用
@@ -35,11 +35,11 @@ export async function GET() {
     }
 
     // 2. 查 Stripe customers by email
-    const customers = await stripe.customers.list({ email: user.email, limit: 20 });
+    const customers = await getStripe().customers.list({ email: user.email, limit: 20 });
     logs.push(`Stripe customers by email: ${customers.data.length}`);
 
     for (const c of customers.data) {
-      const subs = await stripe.subscriptions.list({ customer: c.id, limit: 5 });
+      const subs = await getStripe().subscriptions.list({ customer: c.id, limit: 5 });
       logs.push(`  Customer ${c.id} (created ${new Date(c.created * 1000).toISOString()}): ${subs.data.length} subscriptions`);
       for (const s of subs.data) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,7 +49,7 @@ export async function GET() {
     }
 
     // 3. 按 metadata.user_id 查找 Stripe customers
-    const customersByMeta = await stripe.customers.list({ limit: 50 });
+    const customersByMeta = await getStripe().customers.list({ limit: 50 });
     const matchingCustomers = customersByMeta.data.filter(
       (c) => c.metadata?.user_id === user.id
     );

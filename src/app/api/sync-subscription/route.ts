@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import type { SubscriptionStatus } from "@/types/user";
 
 // POST /api/sync-subscription —— 手动从 Stripe 同步订阅状态
@@ -68,7 +68,7 @@ export async function POST() {
     if (!stripeCustomerId && user.email) {
       steps.push("stripe_search_customer_start");
       try {
-        const customers = await stripe.customers.list({
+        const customers = await getStripe().customers.list({
           email: user.email,
           limit: 20,
         });
@@ -76,7 +76,7 @@ export async function POST() {
 
         for (const c of customers.data) {
           try {
-            const subs = await stripe.subscriptions.list({
+            const subs = await getStripe().subscriptions.list({
               customer: c.id,
               limit: 5,
             });
@@ -108,7 +108,7 @@ export async function POST() {
     if (!stripeSubId && stripeCustomerId) {
       steps.push("stripe_find_sub_start");
       try {
-        const subscriptions = await stripe.subscriptions.list({
+        const subscriptions = await getStripe().subscriptions.list({
           customer: stripeCustomerId,
           limit: 5,
         });
@@ -134,7 +134,7 @@ export async function POST() {
     steps.push("stripe_retrieve_sub_start");
     let stripeSub;
     try {
-      stripeSub = await stripe.subscriptions.retrieve(stripeSubId);
+      stripeSub = await getStripe().subscriptions.retrieve(stripeSubId);
       steps.push(`stripe_retrieve_done: status=${stripeSub.status}`);
     } catch (e) {
       steps.push(`stripe_retrieve_error: ${String(e)}`);

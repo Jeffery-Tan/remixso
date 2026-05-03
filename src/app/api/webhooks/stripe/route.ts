@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
 import type { SubscriptionStatus } from "@/types/user";
 
@@ -53,7 +53,7 @@ async function handleCheckoutCompleted(
   }
 
   // 从 Stripe 获取完整订阅信息
-  const sub = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+  const sub = await getStripe().subscriptions.retrieve(stripeSubscriptionId);
   const priceId = sub.items.data[0]?.price?.id ?? null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const s = sub as any;
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
   let event;
   try {
     const rawBody = await request.text();
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       rawBody,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!

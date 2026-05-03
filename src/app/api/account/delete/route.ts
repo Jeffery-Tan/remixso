@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 // DELETE /api/account/delete — 永久删除账号及所有数据
 
@@ -29,7 +29,7 @@ export async function DELETE(_req: NextRequest) {
 
     if (sub?.stripe_subscription_id) {
       try {
-        await stripe.subscriptions.cancel(sub.stripe_subscription_id);
+        await getStripe().subscriptions.cancel(sub.stripe_subscription_id);
       } catch (e) {
         console.warn("[delete-account] Stripe cancel failed:", e);
         // 继续执行，即使 Stripe 取消失败也要删本地数据
