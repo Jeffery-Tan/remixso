@@ -34,6 +34,7 @@ interface GenerationState {
   refiningPlatform: PlatformCode | null;
   refineInstruction: string;
   isRefining: boolean;
+  preRefineContent: string | null; // refine 前的内容，用于 before/after 对比
 
   // Actions
   setSourceType: (type: "text" | "url") => void;
@@ -75,6 +76,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
   refiningPlatform: null,
   refineInstruction: "",
   isRefining: false,
+  preRefineContent: null,
 
   setSourceType: (type) => set({ sourceType: type }),
   setSourceContent: (content) => set({ sourceContent: content }),
@@ -186,7 +188,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
     set({ refiningPlatform: platform, refineInstruction: "" }),
 
   cancelRefine: () =>
-    set({ refiningPlatform: null, refineInstruction: "" }),
+    set({ refiningPlatform: null, refineInstruction: "", preRefineContent: null }),
 
   setRefineInstruction: (instruction) => set({ refineInstruction: instruction }),
 
@@ -195,7 +197,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
     const current = results[platform];
     if (!current || !refineInstruction.trim()) return;
 
-    set({ isRefining: true, error: null });
+    set({ isRefining: true, error: null, preRefineContent: current.content });
     try {
       const res = await fetch("/api/refine", {
         method: "POST",
@@ -216,6 +218,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
               ? data.error
               : "Refinement failed",
           isRefining: false,
+          preRefineContent: null,
         });
         return;
       }
@@ -230,7 +233,6 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
             isEdited: true,
           },
         },
-        refiningPlatform: null,
         refineInstruction: "",
         isRefining: false,
         creditsRemaining: data.creditsRemaining ?? get().creditsRemaining,
@@ -243,7 +245,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
           .updateEntryOutput(generationId, platform, data.content);
       }
     } catch {
-      set({ error: "Network error during refinement.", isRefining: false });
+      set({ error: "Network error during refinement.", isRefining: false, preRefineContent: null });
     }
   },
 
@@ -311,6 +313,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
       platformStatuses: {},
       refiningPlatform: null,
       refineInstruction: "",
+      preRefineContent: null,
       sourceContent: "",
       sourceTitle: null,
       sourceUrl: "",
@@ -345,6 +348,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
       platformStatuses,
       refiningPlatform: null,
       refineInstruction: "",
+      preRefineContent: null,
     });
   },
 }));

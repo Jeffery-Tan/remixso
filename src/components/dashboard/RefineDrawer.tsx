@@ -45,6 +45,7 @@ export function RefineDrawer() {
     refineInstruction,
     isRefining,
     error,
+    preRefineContent,
     results,
     setRefineInstruction,
     refine,
@@ -158,68 +159,113 @@ export function RefineDrawer() {
 
         {/* 可滚动内容 */}
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
-          {/* 当前版本 */}
-          <section>
-            <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[var(--outline)] mb-3 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--outline-variant)]" />
-              Current version
-            </h3>
-            <div className="bg-[var(--surface-container-lowest)] border border-[var(--foreground)]/5 p-5 rounded-lg shadow-[4px_4px_0px_0px_rgba(25,28,30,0.03)]">
-              <p className="text-sm leading-relaxed whitespace-pre-wrap line-clamp-6">
-                {currentContent}
-              </p>
-            </div>
-          </section>
+          {preRefineContent ? (
+            <>
+              {/* Refine 完成 —— 前后对比 */}
+              <section>
+                <div className="flex items-center gap-2 mb-3">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <h2 className="text-sm font-semibold text-green-600 dark:text-green-400">
+                    Refined!
+                  </h2>
+                </div>
+              </section>
 
-          {/* Quick Prompts */}
-          <section>
-            <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[var(--outline)] mb-3 flex items-center gap-2">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-              </svg>
-              Quick Prompts
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {QUICK_PROMPTS.map((qp) => (
-                <button
-                  key={qp.label}
-                  onClick={() => handleQuickPrompt(qp.instruction)}
-                  disabled={isRefining}
-                  className="px-3.5 py-2 rounded-full border border-[var(--outline-variant)] text-sm text-[var(--on-surface-variant)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-fixed)]/5 transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <qp.icon size={14} className="text-[var(--primary)] shrink-0"/>
-                  {qp.label}
-                </button>
-              ))}
-            </div>
-          </section>
+              {/* Before */}
+              <section>
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[var(--outline)] mb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--outline-variant)]" />
+                  Before
+                </h3>
+                <div className="bg-[var(--surface-container-lowest)] border border-[var(--outline-variant)]/30 p-4 rounded-lg">
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap text-[var(--on-surface-variant)] line-clamp-5">
+                    {preRefineContent}
+                  </p>
+                </div>
+              </section>
 
-          {/* 指令输入 */}
-          <section>
-            <label className="text-sm font-medium" htmlFor="refine-instruction">
-              What would you like to change?
-            </label>
-            <div className="mt-2 flex flex-col border border-[var(--outline-variant)] rounded-xl bg-[var(--surface-bright)] focus-within:border-[var(--primary)] focus-within:ring-1 focus-within:ring-[var(--primary)] transition-all overflow-hidden">
-              <textarea
-                id="refine-instruction"
-                className="w-full border-none bg-transparent p-4 text-sm placeholder:text-[var(--outline)] resize-none focus:ring-0"
-                placeholder='e.g. "Make it more casual", "Shorten to 100 words", "Add a question at the end"'
-                value={refineInstruction}
-                onChange={(e) => setRefineInstruction(e.target.value)}
-                disabled={isRefining}
-                rows={3}
-              />
-            </div>
-          </section>
+              {/* After */}
+              <section>
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[var(--primary)] mb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" />
+                  After
+                </h3>
+                <div className="bg-[var(--primary)]/5 border border-[var(--primary)]/20 p-4 rounded-lg">
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                    {currentContent}
+                  </p>
+                </div>
+              </section>
+            </>
+          ) : (
+            <>
+              {/* 当前版本 */}
+              <section>
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[var(--outline)] mb-3 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--outline-variant)]" />
+                  Current version
+                </h3>
+                <div className="bg-[var(--surface-container-lowest)] border border-[var(--foreground)]/5 p-5 rounded-lg shadow-[4px_4px_0px_0px_rgba(25,28,30,0.03)]">
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap line-clamp-6">
+                    {currentContent}
+                  </p>
+                </div>
+              </section>
+
+              {/* Quick Prompts */}
+              <section>
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[var(--outline)] mb-3 flex items-center gap-2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                  </svg>
+                  Quick Prompts
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {QUICK_PROMPTS.map((qp) => (
+                    <button
+                      key={qp.label}
+                      onClick={() => handleQuickPrompt(qp.instruction)}
+                      disabled={isRefining}
+                      className="px-3.5 py-2 rounded-full border border-[var(--outline-variant)] text-sm text-[var(--on-surface-variant)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-fixed)]/5 transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <qp.icon size={14} className="text-[var(--primary)] shrink-0"/>
+                      {qp.label}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* 指令输入 */}
+              <section>
+                <label className="text-sm font-medium" htmlFor="refine-instruction">
+                  What would you like to change?
+                </label>
+                <div className="mt-2 flex flex-col border border-[var(--outline-variant)] rounded-xl bg-[var(--surface-bright)] focus-within:border-[var(--primary)] focus-within:ring-1 focus-within:ring-[var(--primary)] transition-all overflow-hidden">
+                  <textarea
+                    id="refine-instruction"
+                    className="w-full border-none bg-transparent p-4 text-sm placeholder:text-[var(--outline)] resize-none focus:ring-0"
+                    placeholder='e.g. "Make it more casual", "Shorten to 100 words", "Add a question at the end"'
+                    value={refineInstruction}
+                    onChange={(e) => setRefineInstruction(e.target.value)}
+                    disabled={isRefining}
+                    rows={3}
+                  />
+                </div>
+              </section>
+            </>
+          )}
         </div>
 
         {/* 底部操作 */}
@@ -243,28 +289,39 @@ export function RefineDrawer() {
             </div>
           )}
           <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={cancelRefine}
-              disabled={isRefining}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleRefine}
-              disabled={!refineInstruction.trim() || isRefining}
-              className="flex-1 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] glow-purple-sm"
-            >
-              {isRefining ? (
-                <>
-                  <Spinner className="mr-2" />
-                  Refining...
-                </>
-              ) : (
-                "Apply"
-              )}
-            </Button>
+            {preRefineContent ? (
+              <Button
+                onClick={cancelRefine}
+                className="flex-1 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] glow-purple-sm"
+              >
+                Done
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={cancelRefine}
+                  disabled={isRefining}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleRefine}
+                  disabled={!refineInstruction.trim() || isRefining}
+                  className="flex-1 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] glow-purple-sm"
+                >
+                  {isRefining ? (
+                    <>
+                      <Spinner className="mr-2" />
+                      Refining...
+                    </>
+                  ) : (
+                    "Apply"
+                  )}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
