@@ -1,12 +1,84 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
-// 登录页 —— 目前只支持 Google OAuth
+// 登录页 —— Google OAuth + Email (Magic Link / Password)
 
 function SignInContent() {
+  const [mode, setMode] = useState<"magic" | "password">("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  // Magic Link
+  const handleSendLink = async () => {
+    if (!email.trim()) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send link");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Email + Password
+  const handlePasswordAuth = async () => {
+    if (!email.trim() || !password) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const supabase = createClient();
+      if (isSignUp) {
+        const { error } = await supabase.auth.signUp({
+          email: email.trim(),
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          },
+        });
+        if (error) throw error;
+        setSent(true);
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+        if (error) throw error;
+        window.location.href = "/dashboard";
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Authentication failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mode === "magic") {
+      handleSendLink();
+    } else {
+      handlePasswordAuth();
+    }
+  };
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="w-full max-w-sm mx-auto text-center space-y-6">
@@ -31,12 +103,111 @@ function SignInContent() {
           </span>
         </Link>
 
-        <h1 className="text-2xl font-bold">Sign in to RemixSo</h1>
+        <h1 className="text-2xl font-bold">
+          {isSignUp && mode === "password" ? "Create account" : "Sign in to RemixSo"}
+        </h1>
         <p className="text-[var(--muted-foreground)] text-sm">
-          Get 3 free generations per month. One click sign-in with Google.
+          Get 3 free generations per month.
         </p>
 
+        {/* Google */}
         <GoogleSignInButton />
+
+        {/* 分隔线 */}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-[var(--outline-variant)]/50" />
+          <span className="text-xs text-[var(--muted-foreground)]">or</span>
+          <div className="flex-1 h-px bg-[var(--outline-variant)]/50" />
+        </div>
+
+        {/* Sent confirmation */}
+        {sent ? (
+          <div className="p-4 rounded-xl border border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20 text-sm text-green-700 dark:text-green-400">
+            {isSignUp
+              ? "Check your inbox to confirm your email."
+              : "Link sent! Check your inbox for "}
+            <strong>{email}</strong>
+          </div>
+        ) : (
+          <>
+            {/* Mode tabs */}
+            <div className="flex rounded-full bg-[var(--surface-container)] p-0.5">
+              <button
+                type="button"
+                onClick={() => { setMode("password"); setIsSignUp(false); }}
+                className={`flex-1 rounded-full py-2 text-sm font-medium transition-all ${
+                  mode === "password"
+                    ? "bg-[var(--surface-bright)] shadow-sm text-[var(--foreground)]"
+                    : "text-[var(--on-surface-variant)]"
+                }`}
+              >
+                Password
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("magic")}
+                className={`flex-1 rounded-full py-2 text-sm font-medium transition-all ${
+                  mode === "magic"
+                    ? "bg-[var(--surface-bright)] shadow-sm text-[var(--foreground)]"
+                    : "text-[var(--on-surface-variant)]"
+                }`}
+              >
+                Magic Link
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full rounded-xl border border-[var(--outline-variant)]/60 bg-[var(--surface-container-lowest)] px-4 py-2.5 text-sm placeholder:text-[var(--on-surface-variant)]/50 focus-visible:outline-none focus-visible:border-[var(--primary)] focus-visible:ring-1 focus-visible:ring-[var(--primary)] transition-all"
+              />
+              {mode === "password" && (
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="w-full rounded-xl border border-[var(--outline-variant)]/60 bg-[var(--surface-container-lowest)] px-4 py-2.5 text-sm placeholder:text-[var(--on-surface-variant)]/50 focus-visible:outline-none focus-visible:border-[var(--primary)] focus-visible:ring-1 focus-visible:ring-[var(--primary)] transition-all"
+                />
+              )}
+              {error && <p className="text-xs text-red-500">{error}</p>}
+              <button
+                type="submit"
+                disabled={loading || !email.trim() || (mode === "password" && !password)}
+                className="w-full rounded-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold text-sm py-2.5 disabled:opacity-50 transition-all"
+              >
+                {loading
+                  ? "Please wait..."
+                  : mode === "magic"
+                    ? "Send Magic Link"
+                    : isSignUp
+                      ? "Create Account"
+                      : "Sign In"}
+              </button>
+            </form>
+
+            {/* Sign up / Sign in toggle */}
+            {mode === "password" && (
+              <p className="text-xs text-[var(--muted-foreground)]">
+                {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+                <button
+                  type="button"
+                  onClick={() => { setIsSignUp(!isSignUp); setError(null); }}
+                  className="text-[var(--primary)] font-medium hover:underline"
+                >
+                  {isSignUp ? "Sign in" : "Sign up"}
+                </button>
+              </p>
+            )}
+          </>
+        )}
 
         <p className="text-xs text-[var(--muted-foreground)]">
           By continuing, you agree to our Terms and Privacy Policy.
