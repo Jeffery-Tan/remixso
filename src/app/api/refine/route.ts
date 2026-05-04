@@ -94,26 +94,19 @@ export async function POST(request: NextRequest) {
     // 持久化微调结果（用 service client 绕过 RLS）
     if (generationId) {
       const serviceClient = createServiceClient();
-      const { data: existing } = await serviceClient
+      const { error: upsertError } = await serviceClient
         .from("platform_outputs")
-        .select("id")
-        .eq("generation_id", generationId)
-        .eq("platform", platform)
-        .single();
-
-      if (existing) {
-        await serviceClient
-          .from("platform_outputs")
-          .update({ generated_content: response })
-          .eq("id", existing.id);
-      } else {
-        await serviceClient
-          .from("platform_outputs")
-          .insert({
+        .upsert(
+          {
             generation_id: generationId,
             platform,
             generated_content: response,
-          });
+          },
+          { onConflict: "generation_id, platform" }
+        );
+
+      if (upsertError) {
+        console.error("Failed to persist refine:", upsertError);
       }
     }
 
