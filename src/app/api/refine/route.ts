@@ -101,6 +101,7 @@ export async function POST(request: NextRequest) {
             generation_id: generationId,
             platform,
             generated_content: response,
+            updated_at: new Date().toISOString(),
           },
           { onConflict: "generation_id, platform" }
         );
