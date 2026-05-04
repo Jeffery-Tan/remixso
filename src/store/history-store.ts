@@ -11,6 +11,11 @@ interface HistoryState {
   error: string | null;
   fetchHistory: () => Promise<void>;
   deleteEntry: (id: string) => Promise<void>;
+  updateEntryOutput: (
+    generationId: string,
+    platform: string,
+    newContent: string
+  ) => void;
 }
 
 export const useHistoryStore = create<HistoryState>((set, get) => ({
@@ -38,5 +43,19 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
     } catch {
       set({ error: "Failed to delete" });
     }
+  },
+
+  updateEntryOutput: (generationId, platform, newContent) => {
+    set({
+      entries: get().entries.map((e) => {
+        if (e.id !== generationId) return e;
+        return {
+          ...e,
+          outputs: e.outputs.map((o) =>
+            o.platform === platform ? { ...o, content: newContent } : o
+          ),
+        };
+      }),
+    });
   },
 }));

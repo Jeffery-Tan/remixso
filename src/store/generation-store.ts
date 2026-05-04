@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import type { PlatformCode } from "@/types/platform";
 import type { GenerationStatus, PlatformResult, HistoryEntry } from "@/types/generation";
+import { useHistoryStore } from "@/store/history-store";
 
 // 单平台生成进度
 type PlatformGenStatus = "pending" | "generating" | "done" | "error";
@@ -208,7 +209,14 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
       });
 
       if (!res.ok) {
-        set({ error: "Refinement failed", isRefining: false });
+        const data = await res.json().catch(() => ({}));
+        set({
+          error:
+            data.code === "UPGRADE_REQUIRED"
+              ? data.error
+              : "Refinement failed",
+          isRefining: false,
+        });
         return;
       }
 
@@ -225,7 +233,15 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
         refiningPlatform: null,
         refineInstruction: "",
         isRefining: false,
+        creditsRemaining: data.creditsRemaining ?? get().creditsRemaining,
       });
+
+      // 同步更新历史记录
+      if (generationId) {
+        useHistoryStore
+          .getState()
+          .updateEntryOutput(generationId, platform, data.content);
+      }
     } catch {
       set({ error: "Network error during refinement.", isRefining: false });
     }
