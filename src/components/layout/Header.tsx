@@ -224,8 +224,7 @@ export function Header() {
           createPortal(
             <div
               ref={mobileMenuRef}
-              className="sm:hidden fixed inset-0 top-14 z-50"
-              style={{ backgroundColor: theme === "dark" ? "#2c3038" : "#ffffff" }}
+              className="sm:hidden fixed inset-0 top-14 z-50 bg-[var(--surface-container-lowest)]"
             >
               <div className="flex flex-col gap-1 p-4 pt-6">
                 <Link href="/#product" onClick={() => setMobileMenuOpen(false)} className={`text-lg font-medium py-3 px-4 rounded-xl transition-colors ${isHome && activeSection === "product" ? "text-[var(--primary)] bg-[var(--primary)]/5" : "hover:bg-[var(--surface-container)]"}`}>Product</Link>

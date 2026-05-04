@@ -9,7 +9,7 @@ import { Dialog } from "@/components/ui/Dialog";
 import { PLATFORM_META } from "@/types/platform";
 import type { PlatformCode } from "@/types/platform";
 import type { HistoryEntry } from "@/types/generation";
-import { Spinner } from "@/components/ui/Spinner";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/utils";
 
 // 历史记录面板 —— 点击展开查看已保存的输出结果
@@ -118,8 +118,20 @@ export function HistoryPanel({ onLoadEntry }: HistoryPanelProps) {
       </h1>
 
       {isLoading && entries.length === 0 && (
-        <div className="flex items-center justify-center py-20">
-          <Spinner />
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="rounded-2xl border border-[var(--outline-variant)]/30 p-5 space-y-3">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="h-4 w-10 rounded-full" />
+              </div>
+              <Skeleton className="h-4 w-3/4" />
+              <div className="flex gap-2">
+                <Skeleton className="h-5 w-16 rounded-full" />
+                <Skeleton className="h-5 w-20 rounded-full" />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

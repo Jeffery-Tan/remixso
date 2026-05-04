@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import type { PlatformCode } from "@/types/platform";
 import { PLATFORM_META } from "@/types/platform";
 import { useToast } from "@/components/ui/Toast";
+import { SkeletonCard } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/utils";
 
 // 结果面板 —— Tab 切换各平台生成结果
@@ -30,6 +31,17 @@ export function ResultsPanel() {
       });
     }
   }, [platformsWithResults, results]);
+
+  // 生成中 —— 骨架屏
+  if (status === "analyzing" || status === "generating") {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {selectedPlatforms.map((p) => (
+          <SkeletonCard key={p} />
+        ))}
+      </div>
+    );
+  }
 
   if (status !== "done") return null;
 

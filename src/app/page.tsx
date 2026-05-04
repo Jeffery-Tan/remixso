@@ -117,7 +117,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8 items-start max-w-5xl mx-auto">
             {features.map((f, i) => (
               <RevealOnScroll key={f.title} delay={i * 150}>
-                <Card className={`text-center glass-card border-[var(--outline-variant)]/30 rounded-3xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ${i === 0 ? "mt-6 md:mt-12" : i === 1 ? "md:-mt-8" : "md:mt-20"}`}>
+                <Card className={`text-center glass-card border-[var(--outline-variant)]/30 rounded-3xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ${i === 0 ? "md:mt-12" : i === 1 ? "md:-mt-8" : "md:mt-20"}`}>
                   <span className="text-[var(--primary)] mb-6 block">{f.icon && <f.icon size={28} className="mx-auto" />}</span>
                   <h3 className="font-[family-name:var(--font-headline)] text-xl font-bold mb-3 tracking-tight">{f.title}</h3>
                   <p className="text-sm text-[var(--on-surface-variant)] font-light leading-relaxed">{f.description}</p>
