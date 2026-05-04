@@ -44,10 +44,12 @@ export function RefineDrawer() {
     refiningPlatform,
     refineInstruction,
     isRefining,
+    error,
     results,
     setRefineInstruction,
     refine,
     cancelRefine,
+    setError,
   } = useGenerationStore();
 
   const [closing, setClosing] = useState(false);
@@ -221,7 +223,25 @@ export function RefineDrawer() {
         </div>
 
         {/* 底部操作 */}
-        <div className="px-6 py-4 border-t border-[var(--outline-variant)]/50 bg-[var(--surface-container-lowest)]">
+        <div className="px-6 py-4 border-t border-[var(--outline-variant)]/50 bg-[var(--surface-container-lowest)] space-y-3">
+          {error && (
+            <div className="p-3 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-sm text-amber-800 dark:text-amber-300">
+              <p className="mb-2">{error}</p>
+              {error.includes("Upgrade to Pro") && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    cancelRefine();
+                    setError(null);
+                    window.location.href = "/#pricing";
+                  }}
+                  className="inline-block rounded-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold text-xs px-4 py-1.5 transition-all"
+                >
+                  Upgrade to Pro
+                </button>
+              )}
+            </div>
+          )}
           <div className="flex gap-3">
             <Button
               variant="outline"
