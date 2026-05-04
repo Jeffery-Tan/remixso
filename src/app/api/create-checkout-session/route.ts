@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getStripe, getOrCreateStripeCustomer, STRIPE_PRO_PRICE_ID } from "@/lib/stripe";
+import { createCheckoutUrl } from "@/lib/dodo";
 
-// POST /api/create-checkout-session —— 创建 Stripe Checkout Session
-// 已登录用户调用，重定向到 Stripe 付款页
+// POST /api/create-checkout-session —— 创建 Dodo Payments Checkout
+// 已登录用户调用，重定向到 Dodo Payments 付款页
 
 export async function POST() {
   try {
@@ -36,32 +36,23 @@ export async function POST() {
       );
     }
 
-    // 获取或创建 Stripe Customer
-    const stripeCustomerId = await getOrCreateStripeCustomer(
-      user.id,
-      user.email
-    );
+    // 防薅：只有从未有过订阅记录的用户才给 7 天试用
+    const hasHistory =
+      subscription?.status === "canceled" ||
+      subscription?.status === "expired" ||
+      subscription?.status === "past_due";
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
-    // 创建 Checkout Session
-    const session = await getStripe().checkout.sessions.create({
-      customer: stripeCustomerId,
-      mode: "subscription",
-      line_items: [{ price: STRIPE_PRO_PRICE_ID, quantity: 1 }],
-      subscription_data: { trial_period_days: 7 },
-      success_url: `${appUrl}/account?checkout=success`,
-      cancel_url: `${appUrl}/pricing?checkout=canceled`,
-      metadata: { user_id: user.id },
-      allow_promotion_codes: true,
-      billing_address_collection: "auto",
+    const url = await createCheckoutUrl({
+      email: user.email,
+      userId: user.id,
+      successUrl: `${appUrl}/account?checkout=success`,
+      cancelUrl: `${appUrl}/pricing?checkout=canceled`,
+      trialPeriodDays: hasHistory ? 0 : 7,
     });
 
-    if (!session.url) {
-      throw new Error("Stripe returned no checkout URL");
-    }
-
-    return NextResponse.json({ url: session.url });
+    return NextResponse.json({ url });
   } catch (err) {
     console.error("Checkout session error:", err);
     return NextResponse.json(

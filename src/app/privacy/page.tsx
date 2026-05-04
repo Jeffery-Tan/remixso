@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             </li>
             <li>
               <strong>Payment data:</strong> billing information is collected and
-              processed entirely by Stripe. We do not store full credit card
+              processed entirely by Dodo Payments. We do not store full credit card
               numbers on our servers.
             </li>
             <li>
@@ -88,7 +88,7 @@ export default function PrivacyPage() {
               storage (GDPR compliant, data hosted in EU or US regions).
             </li>
             <li>
-              <strong>Stripe</strong> — payment processing (PCI DSS Level 1
+              <strong>Dodo Payments</strong> — payment processing (PCI DSS Level 1
               certified, data hosted in the US).
             </li>
             <li>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
           <h2 className="font-semibold text-lg mb-2">5. Cookies</h2>
           <p>
             We use only functional cookies required for authentication (Supabase
-            Auth session tokens) and payment processing (Stripe). We do not use
+            Auth session tokens) and payment processing (Dodo Payments). We do not use
             advertising or tracking cookies. See our cookie banner for details.
           </p>
         </section>

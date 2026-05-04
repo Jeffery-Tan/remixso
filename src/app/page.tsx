@@ -7,6 +7,7 @@ import { HomeDemo } from "@/components/home/HomeDemo";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { PlatformShowcase } from "@/components/home/PlatformShowcase";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { PlatformIcon } from "@/components/icons/PlatformIcon";
 import { Sparkles, Mic, Share2, Pencil, Check, ClipboardPaste, Wand2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -101,7 +102,7 @@ export default function HomePage() {
             {platforms.map((p, i) => (
               <RevealOnScroll key={p.id} delay={i * 60}>
                 <div className="glass-card rounded-2xl text-center py-5 px-3 hover:border-[var(--primary)]/40 hover:bg-[var(--primary)]/5 hover:-translate-y-1 hover:shadow-md transition-all duration-300 cursor-pointer group">
-                  <span className="text-2xl block mb-2 group-hover:scale-110 transition-transform duration-300">{p.icon}</span>
+                  <PlatformIcon platform={p.id} size={28} className="mx-auto mb-2 group-hover:scale-110 transition-transform duration-300 text-[var(--on-surface-variant)]" />
                   <p className="text-xs font-semibold tracking-wider uppercase text-[var(--foreground)]/80">{p.name}</p>
                 </div>
               </RevealOnScroll>
@@ -224,12 +225,12 @@ export default function HomePage() {
 }
 
 const platforms = [
-  { id: "twitter", name: "X / Twitter", icon: "𝕏" },
-  { id: "linkedin", name: "LinkedIn", icon: "💼" },
-  { id: "instagram", name: "Instagram", icon: "📸" },
-  { id: "newsletter", name: "Newsletter", icon: "📧" },
-  { id: "tiktok", name: "TikTok", icon: "🎵" },
-  { id: "youtube", name: "YT Shorts", icon: "▶️" },
+  { id: "twitter", name: "X / Twitter" },
+  { id: "linkedin", name: "LinkedIn" },
+  { id: "instagram", name: "Instagram" },
+  { id: "newsletter", name: "Newsletter" },
+  { id: "tiktok", name: "TikTok" },
+  { id: "youtube-shorts", name: "YT Shorts" },
 ];
 
 const features = [

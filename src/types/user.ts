@@ -13,12 +13,14 @@ export type SubscriptionStatus =
   | "active"
   | "past_due"
   | "canceled"
-  | "unpaid";
+  | "expired"
+  | "paused";
 
 // 订阅信息
 export interface Subscription {
-  stripeCustomerId: string | null;
-  stripeSubscriptionId: string | null;
+  customerId: string | null;
+  subscriptionId: string | null;
+  variantId: string | null;
   status: SubscriptionStatus;
   trialStartedAt: string | null;
   trialEndsAt: string | null;

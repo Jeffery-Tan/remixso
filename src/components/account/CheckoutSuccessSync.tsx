@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// 付款成功后自动从 Stripe 同步订阅状态
+// 付款成功后自动从 Dodo Payments 同步订阅状态
 // 页面加载时调一次 /api/sync-subscription，然后刷新页面
 
 export function CheckoutSuccessSync() {
@@ -10,12 +10,22 @@ export function CheckoutSuccessSync() {
     "syncing"
   );
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const ran = useRef(false);
 
   useEffect(() => {
+    if (ran.current) return;
+    ran.current = true;
+
     const sync = async () => {
       try {
+        // Dodo 在 return_url 后会附加 subscription_id、status、email
+        const params = new URLSearchParams(window.location.search);
+        const subscriptionId = params.get("subscription_id");
+
         const res = await fetch("/api/sync-subscription", {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: subscriptionId ? JSON.stringify({ subscription_id: subscriptionId }) : undefined,
         });
         const data = await res.json();
         if (res.ok && data.synced) {
@@ -40,7 +50,7 @@ export function CheckoutSuccessSync() {
     return (
       <div className="mb-6 p-4 rounded-lg border border-blue-200 bg-blue-50">
         <p className="text-sm text-blue-700">
-          Syncing your subscription status from Stripe...
+          Syncing your subscription status...
         </p>
       </div>
     );

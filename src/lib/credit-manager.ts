@@ -30,54 +30,116 @@ export async function checkAndDeductCredit(
       subscription?.status === "trialing";
 
     const monthlyLimit = isSubscribed ? PRO_MONTHLY_LIMIT : FREE_MONTHLY_LIMIT;
+    const now = new Date();
+    const resetAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-    // 查用量
+    // 查当前用量（可能没有行——新用户首次生成）
     const { data: credits } = await supabase
       .from("usage_credits")
       .select("free_generations_used, free_reset_at")
       .eq("user_id", userId)
       .single();
 
-    // 检查是否需要重置（30 天）
-    const now = new Date();
-    const resetAt = credits?.free_reset_at
-      ? new Date(credits.free_reset_at!)
-      : new Date();
-
-    if (now >= resetAt) {
-      // 重置额度
-      await supabase
+    if (!credits) {
+      // 新用户：首次生成，INSERT 初始行
+      const { error: insertError } = await supabase
         .from("usage_credits")
-        .update({
-          free_generations_used: 0,
-          free_reset_at: new Date(
-            now.getTime() + 30 * 24 * 60 * 60 * 1000
-          ).toISOString(),
-        })
-        .eq("user_id", userId);
+        .insert({
+          user_id: userId,
+          free_generations_used: 1,
+          free_reset_at: resetAt.toISOString(),
+        });
+
+      if (!insertError) {
+        return {
+          allowed: true,
+          remaining: monthlyLimit - 1,
+          isSubscribed,
+        };
+      }
+      // INSERT 失败（并发冲突），重试读取
+      const { data: retry } = await supabase
+        .from("usage_credits")
+        .select("free_generations_used, free_reset_at")
+        .eq("user_id", userId)
+        .single();
+
+      if (!retry) {
+        return { allowed: false, remaining: 0, isSubscribed };
+      }
+      const retryUsed = retry.free_generations_used ?? 0;
+      if (retryUsed >= monthlyLimit) {
+        return { allowed: false, remaining: 0, isSubscribed };
+      }
+      // 乐观锁递增
+      const { data: retryLocked } = await supabase
+        .from("usage_credits")
+        .update({ free_generations_used: retryUsed + 1 })
+        .eq("user_id", userId)
+        .eq("free_generations_used", retryUsed)
+        .select("free_generations_used")
+        .single();
+
+      if (!retryLocked) {
+        return { allowed: false, remaining: 0, isSubscribed };
+      }
+      return {
+        allowed: true,
+        remaining: monthlyLimit - (retryUsed + 1),
+        isSubscribed,
+      };
     }
 
-    const used = credits?.free_generations_used ?? 0;
-    const remaining = monthlyLimit - used;
+    // 已有行：检查是否需要重置
+    const currentResetAt = credits.free_reset_at
+      ? new Date(credits.free_reset_at)
+      : new Date(0);
+    let currentUsed = credits.free_generations_used ?? 0;
 
+    if (now >= currentResetAt) {
+      // 重置：将已用归零，设置新的重置日期
+      const { data: resetLocked } = await supabase
+        .from("usage_credits")
+        .update({
+          free_generations_used: 1,
+          free_reset_at: resetAt.toISOString(),
+        })
+        .eq("user_id", userId)
+        .eq("free_generations_used", currentUsed)
+        .select("free_generations_used")
+        .single();
+
+      if (!resetLocked) {
+        return { allowed: false, remaining: 0, isSubscribed };
+      }
+      return {
+        allowed: true,
+        remaining: monthlyLimit - 1,
+        isSubscribed,
+      };
+    }
+
+    const remaining = monthlyLimit - currentUsed;
     if (remaining <= 0) {
       return { allowed: false, remaining: 0, isSubscribed };
     }
 
-    // 原子递增（防竞态）
-    const { error } = await supabase
+    // 乐观锁递增
+    const { data: locked } = await supabase
       .from("usage_credits")
-      .update({ free_generations_used: used + 1 })
+      .update({ free_generations_used: currentUsed + 1 })
       .eq("user_id", userId)
-      .lt("free_generations_used", monthlyLimit);
+      .eq("free_generations_used", currentUsed)
+      .select("free_generations_used")
+      .single();
 
-    if (error) {
+    if (!locked) {
       return { allowed: false, remaining: 0, isSubscribed };
     }
 
     return {
       allowed: true,
-      remaining: monthlyLimit - (used + 1),
+      remaining: monthlyLimit - (currentUsed + 1),
       isSubscribed,
     };
   }

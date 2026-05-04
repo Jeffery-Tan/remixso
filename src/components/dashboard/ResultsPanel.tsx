@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useGenerationStore } from "@/store/generation-store";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { PLATFORM_META } from "@/types/platform";
 import type { PlatformCode } from "@/types/platform";
+import { PLATFORM_META } from "@/types/platform";
 import { useToast } from "@/components/ui/Toast";
 import { cn } from "@/lib/utils";
 
@@ -16,10 +16,22 @@ export function ResultsPanel() {
   const { addToast } = useToast();
   const [retrying, setRetrying] = useState<string | null>(null);
 
-  if (status !== "done") return null;
-
   const platformsWithResults = selectedPlatforms.filter((p) => results[p]);
   const failedPlatforms = selectedPlatforms.filter((p) => platformErrors[p] && !results[p]);
+
+  // 所有 hooks 必须在条件返回之前调用
+  const [activePlatform, setActivePlatform] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (platformsWithResults.length > 0) {
+      setActivePlatform((prev) => {
+        if (!prev || !results[prev as PlatformCode]) return platformsWithResults[0];
+        return prev;
+      });
+    }
+  }, [platformsWithResults, results]);
+
+  if (status !== "done") return null;
 
   // 没有任何结果也没有失败，不显示
   if (platformsWithResults.length === 0 && failedPlatforms.length === 0) return null;
@@ -30,19 +42,7 @@ export function ResultsPanel() {
     setRetrying(null);
   };
 
-  const [activePlatform, setActivePlatform] = useState(platformsWithResults[0]);
-
-  // 当 results 变化时，确保 activePlatform 始终指向有效结果
-  // 处理场景：全部失败 → 重试成功 → 需要自动选中新平台
-  useEffect(() => {
-    if (platformsWithResults.length > 0) {
-      if (!activePlatform || !results[activePlatform]) {
-        setActivePlatform(platformsWithResults[0]);
-      }
-    }
-  }, [platformsWithResults, activePlatform, results]);
-
-  const currentResult = activePlatform ? results[activePlatform] : null;
+  const currentResult = activePlatform ? results[activePlatform as PlatformCode] : null;
   const meta = activePlatform ? PLATFORM_META[activePlatform as PlatformCode] : null;
 
   const handleCopy = async () => {

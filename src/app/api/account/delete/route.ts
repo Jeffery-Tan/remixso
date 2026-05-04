@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { getStripe } from "@/lib/stripe";
+import { cancelDodoSubscription } from "@/lib/dodo";
 
 // DELETE /api/account/delete — 永久删除账号及所有数据
 
@@ -20,19 +20,19 @@ export async function DELETE(_req: NextRequest) {
 
     const serviceClient = createServiceClient();
 
-    // 1. 查找并取消 Stripe 订阅
+    // 1. 查找并取消 Lemonsqueezy 订阅
     const { data: sub } = await serviceClient
       .from("subscriptions")
-      .select("stripe_subscription_id, stripe_customer_id")
+      .select("subscription_id, customer_id")
       .eq("user_id", user.id)
       .single();
 
-    if (sub?.stripe_subscription_id) {
+    if (sub?.subscription_id) {
       try {
-        await getStripe().subscriptions.cancel(sub.stripe_subscription_id);
+        await cancelDodoSubscription(sub.subscription_id);
       } catch (e) {
-        console.warn("[delete-account] Stripe cancel failed:", e);
-        // 继续执行，即使 Stripe 取消失败也要删本地数据
+        console.warn("[delete-account] Dodo Payments cancel failed:", e);
+        // 继续执行，即使取消失败也要删本地数据
       }
     }
 

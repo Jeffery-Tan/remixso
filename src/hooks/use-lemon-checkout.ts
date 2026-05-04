@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-// Stripe Checkout / Portal 客户端 hook
+// Dodo Payments Checkout / Cancel 客户端 hook
 // 封装 API 调用和页面跳转逻辑
 
-export function useStripeCheckout() {
+export function useLemonCheckout() {
   const [isLoading, setIsLoading] = useState(false);
 
   const redirectToCheckout = async () => {
@@ -27,7 +27,7 @@ export function useStripeCheckout() {
     }
   };
 
-  const redirectToPortal = async () => {
+  const cancelSubscription = async () => {
     setIsLoading(true);
     try {
       const res = await fetch("/api/create-portal-session", {
@@ -35,16 +35,16 @@ export function useStripeCheckout() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to create portal session");
+        throw new Error(data.error || "Failed to cancel subscription");
       }
-      const { url } = await res.json();
-      window.location.href = url;
+      // 取消了订阅，刷新页面更新 UI
+      window.location.reload();
     } catch (err) {
-      console.error("Portal error:", err);
+      console.error("Cancel error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { redirectToCheckout, redirectToPortal, isLoading };
+  return { redirectToCheckout, cancelSubscription, isLoading };
 }

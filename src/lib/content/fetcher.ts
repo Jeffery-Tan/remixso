@@ -46,6 +46,20 @@ async function resolveAndValidate(hostname: string): Promise<void> {
   }
 }
 
+// JS 渲染平台黑名单 —— 这些网站返回的是空壳 HTML
+const JS_RENDERED_HOSTS = [
+  /(^|\.)x\.com$/,
+  /(^|\.)twitter\.com$/,
+  /(^|\.)instagram\.com$/,
+  /(^|\.)tiktok\.com$/,
+  /(^|\.)facebook\.com$/,
+  /(^|\.)threads\.net$/,
+];
+
+function isJsRenderedHost(hostname: string): boolean {
+  return JS_RENDERED_HOSTS.some((p) => p.test(hostname));
+}
+
 // URL 抓取 + 正文提取
 // 从目标网页提取标题和正文内容
 
@@ -57,28 +71,59 @@ export async function fetchUrlContent(
   try {
     parsedUrl = new URL(url);
   } catch {
-    throw new Error("Invalid URL format");
+    throw new Error(
+      "Invalid URL. Please paste a full link starting with https://"
+    );
   }
 
   if (!["http:", "https:"].includes(parsedUrl.protocol)) {
     throw new Error("Only HTTP/HTTPS URLs are supported");
   }
 
+  // JS 渲染平台提前拦截
+  if (isJsRenderedHost(parsedUrl.hostname)) {
+    throw new Error(
+      "This platform doesn't allow content extraction. Try pasting the text directly instead."
+    );
+  }
+
   // DNS 解析 + 内网 IP 黑名单检查
   await resolveAndValidate(parsedUrl.hostname);
 
   // 抓取网页
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent":
-        "RemixSo/1.0 ContentFetcher",
-      Accept: "text/html,application/xhtml+xml",
-    },
-    signal: AbortSignal.timeout(15000),
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+      },
+      signal: AbortSignal.timeout(20000),
+    });
+  } catch (err) {
+    const name = (err as Error)?.name ?? "";
+    if (name === "TimeoutError" || name === "AbortError") {
+      throw new Error(
+        "The website took too long to respond. It may be behind a paywall or blocking automated access. Try pasting the text manually."
+      );
+    }
+    throw new Error(
+      "Could not reach the website. Check the URL or paste the text directly."
+    );
+  }
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch URL: HTTP ${response.status}`);
+    if (response.status === 403 || response.status === 429) {
+      throw new Error(
+        "This website is blocking content extraction. Try pasting the text directly instead."
+      );
+    }
+    throw new Error(
+      `This page couldn't be loaded (error ${response.status}). Try another URL or paste the text manually.`
+    );
   }
 
   const html = await response.text();
@@ -115,7 +160,9 @@ export async function fetchUrlContent(
   const truncated = cleaned.slice(0, 8000);
 
   if (truncated.length < 100) {
-    throw new Error("Extracted content is too short");
+    throw new Error(
+      "Couldn't extract enough content from this page. The article may be behind a login or paywall. Try pasting the text directly."
+    );
   }
 
   return { title: title.trim(), content: truncated };

@@ -1,37 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/server";
-import { getStripe } from "@/lib/stripe";
-import type { SubscriptionStatus } from "@/types/user";
+import { getDodoSubscription, findSubscriptionByEmail, mapDodoStatus } from "@/lib/dodo";
 
-// POST /api/sync-subscription —— 手动从 Stripe 同步订阅状态
-// 开发环境用，不需要 Stripe CLI / webhook
-// 生产环境 webhook 是主要同步通道，这个是兜底
+// POST /api/sync-subscription —— 从 Dodo Payments 同步订阅状态
+// Webhook 是主要同步通道，这是兜底
+// 请求体可选：{ subscription_id?: string } —— Dodo 返回 URL 参数中提取
 
-function mapStripeStatus(stripeStatus: string): SubscriptionStatus {
-  const map: Record<string, SubscriptionStatus> = {
-    trialing: "trialing",
-    active: "active",
-    past_due: "past_due",
-    canceled: "canceled",
-    unpaid: "unpaid",
-    incomplete: "inactive",
-    incomplete_expired: "inactive",
-  };
-  return map[stripeStatus] ?? "inactive";
-}
-
-function safeDate(ts: number | null | undefined): string | null {
-  if (ts == null || ts === 0) return null;
-  try {
-    return new Date(ts * 1000).toISOString();
-  } catch {
-    return null;
-  }
-}
-
-export async function POST() {
+export async function POST(request: NextRequest) {
   const steps: string[] = [];
+
+  // 解析请求体中可选的 subscription_id（来自 Dodo return URL 参数）
+  let bodySubId: string | null = null;
+  try {
+    const body = await request.json();
+    bodySubId = body?.subscription_id ?? null;
+  } catch {
+    // body 为空或不是 JSON，忽略
+  }
 
   try {
     // Step 1: 认证
@@ -50,138 +36,152 @@ export async function POST() {
     }
     steps.push(`user=${user.id}`);
 
-    // Step 2: 查 DB
-    steps.push("db_query_start");
-    const { data: dbSub, error: dbError } = await supabase
-      .from("subscriptions")
-      .select("stripe_subscription_id, stripe_customer_id")
-      .eq("user_id", user.id)
-      .single();
-    steps.push(
-      `db_query_done: found=${!!dbSub}, err=${dbError?.code ?? "none"}`
-    );
+    // Step 2: 确定要查询的 Dodo subscription_id
+    let dodoSubId = bodySubId;
 
-    let stripeCustomerId = dbSub?.stripe_customer_id ?? null;
-    let stripeSubId = dbSub?.stripe_subscription_id ?? null;
+    if (!dodoSubId) {
+      // 从 DB 查找
+      steps.push("db_query_start");
+      const { data: dbSub, error: dbError } = await supabase
+        .from("subscriptions")
+        .select("subscription_id, customer_id")
+        .eq("user_id", user.id)
+        .single();
+      steps.push(
+        `db_query_done: found=${!!dbSub}, err=${dbError?.code ?? "none"}`
+      );
+      dodoSubId = dbSub?.subscription_id ?? null;
+    } else {
+      steps.push(`bodySubId=${dodoSubId}`);
+    }
 
-    // Step 3: 如果没有 customer_id，从 Stripe 查
-    if (!stripeCustomerId && user.email) {
-      steps.push("stripe_search_customer_start");
-      try {
-        const customers = await getStripe().customers.list({
-          email: user.email,
-          limit: 20,
-        });
-        steps.push(`stripe_customers_found=${customers.data.length}`);
+    if (!dodoSubId) {
+      // Webhook 还没配，或首次付款后 DB 里没有 subscription_id
+      // 通过用户邮箱去 Dodo 查找订阅
+      steps.push("fallback: find_by_email_start");
+      const found = await findSubscriptionByEmail(user.email!);
+      steps.push(`fallback: find_by_email_done: found=${!!found}`);
 
-        for (const c of customers.data) {
-          try {
-            const subs = await getStripe().subscriptions.list({
-              customer: c.id,
-              limit: 5,
-            });
-            if (subs.data.length > 0) {
-              stripeCustomerId = c.id;
-              steps.push(`found_customer_with_sub=${c.id}`);
-              break;
-            }
-          } catch (e) {
-            steps.push(`list_sub_err_for_${c.id}: ${String(e)}`);
-          }
-        }
-
-        if (!stripeCustomerId && customers.data.length > 0) {
-          stripeCustomerId = customers.data[0].id;
-          steps.push(`fallback_to_first_customer=${stripeCustomerId}`);
-        }
-      } catch (e) {
-        steps.push(`stripe_list_customers_error: ${String(e)}`);
+      if (!found?.subscription_id) {
         return NextResponse.json({
           synced: false,
-          reason: "Stripe customer lookup failed",
+          reason: "No subscription found on Dodo for this email",
           steps,
         });
       }
-    }
+      dodoSubId = found.subscription_id;
 
-    // Step 4: 如果没有 subscription_id，从 Stripe 查
-    if (!stripeSubId && stripeCustomerId) {
-      steps.push("stripe_find_sub_start");
-      try {
-        const subscriptions = await getStripe().subscriptions.list({
-          customer: stripeCustomerId,
-          limit: 5,
-        });
+      // 列表里拿到的是 SubscriptionListResponse（精简版），字段够用，直接写 DB
+      const status = mapDodoStatus(found.status, found.trial_period_days);
+      const customerId = found.customer?.customer_id ?? null;
+      const productId = found.product_id ?? null;
+      const nextBilling = found.next_billing_date ?? null;
+      const prevBilling = found.previous_billing_date ?? null;
+      const cancelledAt = found.cancelled_at ?? null;
+
+      steps.push(`fields: status=${status}, product=${productId}`);
+
+      steps.push("db_upsert_start");
+      const serviceClient = createServiceClient();
+      const trialStart = found.created_at ?? null;
+      const trialDays = found.trial_period_days ?? 0;
+      const trialEnd = trialDays > 0 && trialStart
+        ? new Date(new Date(trialStart).getTime() + trialDays * 86400000).toISOString()
+        : null;
+
+      const result = await serviceClient.from("subscriptions").upsert(
+        {
+          user_id: user.id,
+          customer_id: customerId,
+          subscription_id: found.subscription_id,
+          variant_id: productId,
+          status,
+          trial_started_at: trialStart,
+          trial_ends_at: trialEnd,
+          current_period_start_at: prevBilling,
+          current_period_ends_at: nextBilling,
+          canceled_at: cancelledAt,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" }
+      );
+
+      if (result.error) {
         steps.push(
-          `subs_found=${subscriptions.data.length}: [${subscriptions.data.map((s) => `${s.id}(${s.status})`).join(", ")}]`
+          `db_upsert_error: ${result.error.message} (${result.error.code})`
         );
-        stripeSubId = subscriptions.data[0]?.id ?? null;
-      } catch (e) {
-        steps.push(`stripe_list_sub_error: ${String(e)}`);
+        return NextResponse.json({
+          synced: false,
+          reason: `DB upsert failed: ${result.error.message}`,
+          steps,
+        });
       }
-    }
+      steps.push("db_upsert_done");
 
-    if (!stripeSubId) {
       return NextResponse.json({
-        synced: false,
-        reason: `No subscription found. customerId=${stripeCustomerId}`,
+        synced: true,
+        status,
         steps,
       });
     }
-    steps.push(`stripeSubId=${stripeSubId}`);
 
-    // Step 5: 从 Stripe 拉订阅详情
-    steps.push("stripe_retrieve_sub_start");
-    let stripeSub;
+    steps.push(`dodoSubId=${dodoSubId}`);
+
+    // Step 3: 从 Dodo 拉订阅详情
+    steps.push("dodo_retrieve_sub_start");
+    let dodoSub;
     try {
-      stripeSub = await getStripe().subscriptions.retrieve(stripeSubId);
-      steps.push(`stripe_retrieve_done: status=${stripeSub.status}`);
+      dodoSub = await getDodoSubscription(dodoSubId);
+      steps.push(`dodo_retrieve_done: status=${dodoSub.status}`);
     } catch (e) {
-      steps.push(`stripe_retrieve_error: ${String(e)}`);
+      steps.push(`dodo_retrieve_error: ${String(e)}`);
       return NextResponse.json({
         synced: false,
-        reason: `Failed to retrieve subscription ${stripeSubId}: ${String(e)}`,
+        reason: `Failed to retrieve subscription ${dodoSubId}: ${String(e)}`,
         steps,
       });
     }
 
-    // Step 6: 安全提取字段
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const s = stripeSub as any;
-    const priceId = stripeSub.items?.data?.[0]?.price?.id ?? null;
-    const status = mapStripeStatus(s.status ?? "inactive");
-    const trialStart = safeDate(s.trial_start);
-    const trialEnd = safeDate(s.trial_end);
-    const periodStart = safeDate(s.current_period_start);
-    const periodEnd = safeDate(s.current_period_end);
-    const canceledAt = safeDate(s.canceled_at);
+    // Step 4: 提取字段
+    const status = mapDodoStatus(dodoSub.status, dodoSub.trial_period_days);
+    const customerId = dodoSub.customer?.customer_id ?? null;
+    const productId = dodoSub.product_id ?? null;
+    const nextBilling = dodoSub.next_billing_date ?? null;
+    const prevBilling = dodoSub.previous_billing_date ?? null;
+    const cancelledAt = dodoSub.cancelled_at ?? null;
 
-    steps.push(
-      `fields: status=${status}, trial=${trialStart}, period=${periodStart}`
-    );
+    steps.push(`fields: status=${status}, product=${productId}`);
 
-    // Step 7: 写入 DB
+    // Step 5: 写入 DB
     steps.push("db_upsert_start");
     const serviceClient = createServiceClient();
+    const trialStart = dodoSub.created_at ?? null;
+    const trialDays = dodoSub.trial_period_days ?? 0;
+    const trialEnd = trialDays > 0 && trialStart
+      ? new Date(new Date(trialStart).getTime() + trialDays * 86400000).toISOString()
+      : null;
+
     const result = await serviceClient.from("subscriptions").upsert(
       {
         user_id: user.id,
-        stripe_customer_id: stripeCustomerId ?? undefined,
-        stripe_subscription_id: stripeSubId,
-        stripe_price_id: priceId,
+        customer_id: customerId,
+        subscription_id: dodoSubId,
+        variant_id: productId,
         status,
         trial_started_at: trialStart,
         trial_ends_at: trialEnd,
-        current_period_start_at: periodStart,
-        current_period_ends_at: periodEnd,
-        canceled_at: canceledAt,
+        current_period_start_at: prevBilling,
+        current_period_ends_at: nextBilling,
+        canceled_at: cancelledAt,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id" }
     );
 
     if (result.error) {
-      steps.push(`db_upsert_error: ${result.error.message} (${result.error.code})`);
+      steps.push(
+        `db_upsert_error: ${result.error.message} (${result.error.code})`
+      );
       return NextResponse.json({
         synced: false,
         reason: `DB upsert failed: ${result.error.message}`,
@@ -196,11 +196,14 @@ export async function POST() {
       steps,
     });
   } catch (err) {
-    return NextResponse.json({
-      synced: false,
-      error: "Unexpected exception",
-      detail: String(err),
-      steps,
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        synced: false,
+        error: "Unexpected exception",
+        detail: String(err),
+        steps,
+      },
+      { status: 500 }
+    );
   }
 }

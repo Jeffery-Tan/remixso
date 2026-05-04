@@ -74,10 +74,10 @@ export default function CookiePolicyPage() {
                 <tr>
                   <td className="py-2 pr-4">
                     <code className="text-[11px] bg-[var(--surface-container)] px-1 py-0.5 rounded">
-                      stripe.*
+                      dodopayments.*
                     </code>
                   </td>
-                  <td className="py-2 pr-4">Stripe</td>
+                  <td className="py-2 pr-4">Dodo Payments</td>
                   <td className="py-2 pr-4">
                     Fraud detection and security during payment flow
                   </td>

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { getStripe } from "@/lib/stripe";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { cancelDodoSubscription } from "@/lib/dodo";
 
-// POST /api/create-portal-session —— 创建 Stripe Customer Portal Session
-// 已登录且有 stripe_customer_id 的用户调用
+// POST /api/create-portal-session —— 取消 Dodo Payments 订阅
+// 调用 Dodo API 取消，同时更新本地 DB
 
 export async function POST() {
   try {
@@ -19,33 +19,37 @@ export async function POST() {
       );
     }
 
-    // 读取 stripe_customer_id
     const { data: subscription } = await supabase
       .from("subscriptions")
-      .select("stripe_customer_id")
+      .select("subscription_id")
       .eq("user_id", user.id)
       .single();
 
-    if (!subscription?.stripe_customer_id) {
+    if (!subscription?.subscription_id) {
       return NextResponse.json(
-        { error: "No subscription found" },
+        { error: "No active subscription found" },
         { status: 400 }
       );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    await cancelDodoSubscription(subscription.subscription_id);
 
-    // 创建 Portal Session
-    const portalSession = await getStripe().billingPortal.sessions.create({
-      customer: subscription.stripe_customer_id,
-      return_url: `${appUrl}/account`,
-    });
+    // Dodo 设置为到期取消（cancel_at_next_billing_date），同步状态到本地 DB
+    const serviceClient = createServiceClient();
+    await serviceClient
+      .from("subscriptions")
+      .update({
+        status: "canceled",
+        canceled_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("user_id", user.id);
 
-    return NextResponse.json({ url: portalSession.url });
+    return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Portal session error:", err);
+    console.error("Cancel subscription error:", err);
     return NextResponse.json(
-      { error: "Failed to create portal session" },
+      { error: "Failed to cancel subscription" },
       { status: 500 }
     );
   }

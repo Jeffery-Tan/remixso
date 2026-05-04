@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import {
   SubscribeButton,
-  ManageSubscriptionButton,
+  CancelSubscriptionButton,
 } from "@/components/account/AccountActions";
 import { DeleteAccountButton } from "@/components/account/DeleteAccountButton";
 import { CheckoutSuccessSync } from "@/components/account/CheckoutSuccessSync";
@@ -150,7 +150,7 @@ export default async function AccountPage({
                         </p>
                       )}
                     </div>
-                    <ManageSubscriptionButton />
+                    <CancelSubscriptionButton />
                   </div>
                 ) : (
                   <div className="flex items-center justify-between gap-3">

@@ -75,7 +75,7 @@ export default function TermsPage() {
           <p className="mt-1">
             <strong>RemixSo Pro ($19/month):</strong> includes 100 generations
             per month, URL auto-fetch, unlimited AI refinements, and priority
-            access to new features. Billed monthly via Stripe. A 7-day free
+            access to new features. Billed monthly via Dodo Payments. A 7-day free
             trial is available for new subscribers.
           </p>
         </section>
@@ -86,7 +86,7 @@ export default function TermsPage() {
           </h2>
           <ul className="list-disc pl-5 space-y-1">
             <li>
-              Payments are processed securely through Stripe. We do not store
+              Payments are processed securely through Dodo Payments. We do not store
               full payment card details.
             </li>
             <li>

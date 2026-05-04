@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
-import { useStripeCheckout } from "@/hooks/use-stripe-checkout";
+import { useLemonCheckout } from "@/hooks/use-lemon-checkout";
 import { useRouter } from "next/navigation";
 
 // 首页 Pricing CTA 按钮
-// variant="pro" → 已登录跳 Stripe Checkout，未登录跳登录
+// variant="pro" → 已登录跳 Dodo Payments Checkout，未登录跳登录
 // variant="starter" → 跳 signup 或 dashboard
 
 interface PricingCTAProps {
@@ -18,7 +18,7 @@ interface PricingCTAProps {
 export function PricingCTA({ variant }: PricingCTAProps) {
   const { user, isLoading: authLoading } = useAuth();
   const { redirectToCheckout, isLoading: checkoutLoading } =
-    useStripeCheckout();
+    useLemonCheckout();
   const router = useRouter();
 
   const isLoading = authLoading || checkoutLoading;
