@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
         break;
 
       default:
-        // 忽略不处理的事件
+        console.warn("[dodo-webhook] Unrecognized event type:", eventType);
         break;
     }
   } catch (err) {

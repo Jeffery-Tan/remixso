@@ -39,8 +39,8 @@ Source content${sourceTitle ? ` (title: "${sourceTitle}")` : ""}:
 ${sourceContent}
 
 <task>
-1. Identify the SINGLE most valuable counter-intuitive insight, strong opinion, or actionable takeaway from the Source content.
-2. Rewrite that specific insight into a LinkedIn post following the strict structure rules above.
+1. Identify the 1-2 most valuable counter-intuitive insights, strong opinions, or actionable takeaways from the Source content.
+2. Rewrite those insights into a LinkedIn post following the strict structure rules above. LinkedIn posts can carry more depth than short-form platforms — include supporting points that strengthen the main insight.
 3. Apply the Voice Profile completely and check against anti-patterns.
 </task>
 

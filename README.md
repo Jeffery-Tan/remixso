@@ -10,7 +10,7 @@ AI content repurposing for solo creators. Turn one article into platform-perfect
 - **Auth**: Supabase Auth (Google OAuth)
 - **Database**: Supabase (PostgreSQL, RLS)
 - **AI**: DeepSeek (via OpenAI-compatible SDK)
-- **Payments**: Stripe (Checkout, Customer Portal, Webhooks)
+- **Payments**: Dodo Payments (Checkout, Customer Portal, Webhooks)
 - **State**: Zustand
 - **Hosting**: Vercel
 
@@ -21,11 +21,11 @@ AI content repurposing for solo creators. Turn one article into platform-perfect
 - Node.js 20+
 - Supabase project (free tier works)
 - DeepSeek API key
-- Stripe account (for payments)
+- Dodo Payments account (for payments)
 
 ### Environment Variables
 
-Copy `.env.example` to `.env.local`:
+Copy `.env.local.example` to `.env.local`:
 
 ```bash
 # App
@@ -38,13 +38,13 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 # DeepSeek
 DEEPSEEK_API_KEY=sk-your-api-key
-DEEPSEEK_MODEL=deepseek-chat
+DEEPSEEK_MODEL=deepseek-v4-pro
 
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PRO_PRICE_ID=price_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+# Dodo Payments
+DODO_PAYMENTS_API_KEY=dodo_live_...
+DODO_PAYMENTS_WEBHOOK_KEY=wh_live_...
+DODO_PAYMENTS_ENVIRONMENT=test_mode
+DODO_PRO_PRODUCT_ID=product_...
 ```
 
 ### Install & Run
@@ -61,13 +61,15 @@ npm run lint       # ESLint
 
 Run these SQL migrations in your Supabase SQL editor to create the required tables and RLS policies. See `supabase/migrations/` for the full DDL.
 
-### Stripe Webhooks
+### Dodo Payments Webhooks
 
-For local development, use the Stripe CLI:
+For local development, use a webhook forwarding service (e.g., ngrok) to expose your local server. Configure the webhook endpoint in the Dodo Payments dashboard:
 
-```bash
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
+https://your-ngrok-url/api/webhooks/dodo
+```
+
+Select all subscription events and copy the Webhook Key to `DODO_PAYMENTS_WEBHOOK_KEY`.
 
 ## Architecture
 
@@ -77,11 +79,13 @@ src/
 │   ├── api/
 │   │   ├── generate/       # AI content generation
 │   │   ├── refine/         # Single-platform refinement
+│   │   ├── retry-platform/ # Retry failed platform generation
 │   │   ├── fetch-url/      # URL content extraction
 │   │   ├── history/        # Generation history CRUD
 │   │   ├── create-checkout-session/
 │   │   ├── create-portal-session/
-│   │   └── webhooks/stripe/
+│   │   ├── sync-subscription/
+│   │   └── webhooks/dodo/
 │   ├── auth/               # Auth callback & signin page
 │   ├── dashboard/          # Main workspace
 │   ├── account/            # User account management
@@ -94,9 +98,9 @@ src/
 │   ├── deepseek/           # AI pipeline (tone analysis + platform generation)
 │   ├── supabase/           # Server & client Supabase helpers
 │   ├── content/            # URL fetcher + HTML extraction
+│   ├── dodo.ts             # Dodo Payments SDK wrapper
 │   ├── credit-manager.ts   # Usage tracking with optimistic locking
-│   ├── rate-limit.ts       # In-memory rate limiting
-│   └── stripe.ts           # Stripe server helpers
+│   └── rate-limit.ts       # In-memory rate limiting
 ├── store/                  # Zustand stores (generation, history)
 ├── providers/              # Auth context provider
 └── types/                  # TypeScript type definitions

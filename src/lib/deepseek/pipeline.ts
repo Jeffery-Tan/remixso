@@ -77,10 +77,17 @@ export async function runPipeline(
       pacing: "moderate",
       sentence_structure: "mixed",
       vocabulary_level: "everyday",
-      signature_phrases: [],
+      signature_patterns: [],
       pronouns: "you/your",
       formality_index: 5,
       tone_adjectives: ["neutral", "informative"],
+      anti_patterns_to_avoid: [
+        "Unlock the power of",
+        "In today's fast-paced world",
+        "Delve into",
+        "Furthermore",
+        "Tapestry",
+      ],
     };
   }
 

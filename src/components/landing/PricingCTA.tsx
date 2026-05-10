@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
-import { useLemonCheckout } from "@/hooks/use-lemon-checkout";
+import { useDodoCheckout } from "@/hooks/use-dodo-checkout";
 import { useRouter } from "next/navigation";
 
 // 首页 Pricing CTA 按钮
@@ -18,7 +18,7 @@ interface PricingCTAProps {
 export function PricingCTA({ variant }: PricingCTAProps) {
   const { user, isLoading: authLoading } = useAuth();
   const { redirectToCheckout, isLoading: checkoutLoading } =
-    useLemonCheckout();
+    useDodoCheckout();
   const router = useRouter();
 
   const isLoading = authLoading || checkoutLoading;

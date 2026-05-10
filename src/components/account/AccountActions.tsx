@@ -4,12 +4,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 import { Dialog } from "@/components/ui/Dialog";
-import { useLemonCheckout } from "@/hooks/use-lemon-checkout";
+import { useDodoCheckout } from "@/hooks/use-dodo-checkout";
 
 // 账号页的 Dodo Payments 操作按钮
 
 export function SubscribeButton() {
-  const { redirectToCheckout, isLoading } = useLemonCheckout();
+  const { redirectToCheckout, isLoading } = useDodoCheckout();
 
   return (
     <Button
@@ -29,8 +29,12 @@ export function SubscribeButton() {
   );
 }
 
-export function CancelSubscriptionButton() {
-  const { cancelSubscription, isLoading } = useLemonCheckout();
+export function CancelSubscriptionButton({
+  isTrialing,
+}: {
+  isTrialing?: boolean;
+}) {
+  const { cancelSubscription, isLoading } = useDodoCheckout();
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
@@ -47,8 +51,17 @@ export function CancelSubscriptionButton() {
         open={showConfirm}
         onOpenChange={setShowConfirm}
         title="Cancel Subscription"
-        description="Your subscription will remain active until the end of the current billing period. You won't be charged again."
+        description={
+          isTrialing
+            ? "If you cancel during the trial, you will not be eligible for a 7-day free trial if you subscribe again."
+            : "Your subscription will remain active until the end of the current billing period. You won't be charged again."
+        }
       >
+        {isTrialing && (
+          <p className="text-sm text-amber-600 bg-amber-500/10 rounded-lg px-4 py-3 mt-2">
+            This means your next subscription will be charged immediately at $19/month with no trial period.
+          </p>
+        )}
         <div className="flex gap-3 justify-end mt-2">
           <Button
             variant="outline"

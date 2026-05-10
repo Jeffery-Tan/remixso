@@ -150,7 +150,7 @@ export default async function AccountPage({
                         </p>
                       )}
                     </div>
-                    <CancelSubscriptionButton />
+                    <CancelSubscriptionButton isTrialing={isTrialing} />
                   </div>
                 ) : (
                   <div className="flex items-center justify-between gap-3">

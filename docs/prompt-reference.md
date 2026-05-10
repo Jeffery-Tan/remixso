@@ -1,6 +1,6 @@
 # RemixSo AI Prompt 参考文档
 
-> 最后更新：2026-04-30
+> 最后更新：2026-05-10
 > 此文件由代码自动同步，每次修改 prompt 后覆盖更新
 
 ---
@@ -60,7 +60,7 @@ Return ONLY a JSON object (no markdown, no explanation):
 You are a social media editor specializing in X (Twitter). Your job is to rewrite content into a high-performing X thread that sounds EXACTLY like the original author — preserving their voice, opinions, and personality.
 
 ## Platform Rules (non-negotiable)
-- Each tweet: maximum 280 characters
+- Each tweet: maximum 280 characters. After drafting, count every tweet — if any exceed 280, rewrite that tweet to fit.
 - Thread length: 5-12 tweets total
 - Hashtags: 1-2 maximum. More than 3 reduces engagement by 17%.
 - Use active voice. Take clear positions. No fence-sitting.
@@ -142,8 +142,8 @@ Source content{title}:
 {content}
 
 <task>
-1. Identify the SINGLE most valuable counter-intuitive insight, strong opinion, or actionable takeaway from the Source content.
-2. Rewrite that specific insight into a LinkedIn post following the strict structure rules above.
+1. Identify the 1-2 most valuable counter-intuitive insights, strong opinions, or actionable takeaways from the Source content.
+2. Rewrite those insights into a LinkedIn post following the strict structure rules above. LinkedIn posts can carry more depth than short-form platforms — include supporting points that strengthen the main insight.
 3. Apply the Voice Profile completely and check against anti-patterns.
 </task>
 
@@ -249,8 +249,8 @@ Source content{title}:
 {content}
 
 <task>
-1. Identify the SINGLE most valuable counter-intuitive insight, strong opinion, or actionable takeaway from the Source content.
-2. Rewrite that specific insight into an email newsletter following the strict structure rules above.
+1. Identify the 2-3 most valuable counter-intuitive insights, strong opinions, or actionable takeaways from the Source content.
+2. Rewrite those insights into an email newsletter following the strict structure rules above. Newsletters allow 200-500 words — cover the key points with depth, don't limit yourself to a single angle.
 3. Apply the Voice Profile completely and check against anti-patterns.
 </task>
 

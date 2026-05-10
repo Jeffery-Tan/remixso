@@ -20,7 +20,7 @@ export async function DELETE(_req: NextRequest) {
 
     const serviceClient = createServiceClient();
 
-    // 1. 查找并取消 Lemonsqueezy 订阅
+    // 1. 查找并取消 Dodo Payments 订阅
     const { data: sub } = await serviceClient
       .from("subscriptions")
       .select("subscription_id, customer_id")

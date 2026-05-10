@@ -3,9 +3,8 @@
 import { useState } from "react";
 
 // Dodo Payments Checkout / Cancel 客户端 hook
-// 封装 API 调用和页面跳转逻辑
 
-export function useLemonCheckout() {
+export function useDodoCheckout() {
   const [isLoading, setIsLoading] = useState(false);
 
   const redirectToCheckout = async () => {
@@ -37,7 +36,6 @@ export function useLemonCheckout() {
         const data = await res.json();
         throw new Error(data.error || "Failed to cancel subscription");
       }
-      // 取消了订阅，刷新页面更新 UI
       window.location.reload();
     } catch (err) {
       console.error("Cancel error:", err);

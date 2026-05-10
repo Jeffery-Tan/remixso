@@ -142,7 +142,7 @@ States:
 - Free users: progress bar "N / 3" + "Free remaining"
 - Pro users: "Unlimited generations with Pro"
 
-**Success Callback** — When URL has `?checkout=success`: banner "Syncing your subscription status from Stripe..." (auto-refreshes). Error state: "Sync failed" + error detail.
+**Success Callback** — When URL has `?checkout=success`: banner "Syncing your subscription status..." (auto-refreshes). Error state: "Sync failed" + error detail.
 
 **Loading State** — Skeleton screen (pulsing placeholder blocks).
 

@@ -50,7 +50,7 @@
 
 **Pricing CTA 按钮状态：**
 - 未登录 → 跳 `/auth/signin`
-- 已登录未订阅 → 直接跳 Stripe Checkout
+- 已登录未订阅 → 直接跳 Dodo Payments Checkout
 - 已订阅 → 跳 `/account`（文字变为 "Manage Subscription"）
 
 ### 2.2 产品页 `/product`
@@ -141,7 +141,7 @@ Dashboard → 输入内容（文本或URL）→ 选平台 → Generate
 ### 4.3 订阅流
 ```
 账户页 (/account) → 点击 "Subscribe to Pro"
-  → Stripe Checkout（$19/月，7天试用）
+  → Dodo Payments Checkout（$19/月，7天试用）
   → 付款成功 → 跳回 /account?checkout=success
   → 自动同步订阅 → 显示 "Trial Active"
 ```
@@ -233,7 +233,7 @@ Dashboard 结果 → 点某平台 "Refine"
 | 用量卡片副标题 | "This month's activity" |
 | Pro 用量 | "Unlimited generations with Pro" |
 | 免费用量 | "[n] / 3" + "Free remaining" |
-| 同步中横幅 | "Syncing your subscription status from Stripe..." |
+| 同步中横幅 | "Syncing your subscription status..." |
 | 同步失败 | "Sync failed" + 错误详情 |
 
 ### Dashboard

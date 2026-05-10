@@ -40,8 +40,8 @@ Source content${sourceTitle ? ` (title: "${sourceTitle}")` : ""}:
 ${sourceContent}
 
 <task>
-1. Identify the SINGLE most valuable counter-intuitive insight, strong opinion, or actionable takeaway from the Source content.
-2. Rewrite that specific insight into an email newsletter following the strict structure rules above.
+1. Identify the 2-3 most valuable counter-intuitive insights, strong opinions, or actionable takeaways from the Source content.
+2. Rewrite those insights into an email newsletter following the strict structure rules above. Newsletters allow 200-500 words — cover the key points with depth, don't limit yourself to a single angle.
 3. Apply the Voice Profile completely and check against anti-patterns.
 </task>
 
