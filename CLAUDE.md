@@ -97,7 +97,7 @@ src/providers/
 1. 前端 `POST /api/create-checkout-session` → Dodo SDK 创建 checkout → 返回 URL
 2. 用户完成支付 → Dodo 回调 `POST /api/webhooks/dodo`
 3. Webhook 处理 `subscription.created` / `subscription.updated` / `subscription.canceled` 等 9 种事件
-4. 前端 `/account?checkout=success` 时调用 `GET /api/sync-subscription` 同步状态
+4. 前端 `/account?checkout=success` 时调用 `POST /api/sync-subscription` 同步状态
 5. 取消订阅通过 `POST /api/create-portal-session` 跳转 Dodo 管理门户
 
 **当前状态（2026-05-10）**：Dodo KYC 审核通过，已切换到 live_mode。
