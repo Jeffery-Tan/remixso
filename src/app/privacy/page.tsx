@@ -225,10 +225,10 @@ export default function PrivacyPage() {
             <br />
             Email:{" "}
             <a
-              href="mailto:privacy@remixso.com"
+              href="mailto:jeffwgr@gmail.com"
               className="text-[var(--primary)] underline"
             >
-              privacy@remixso.com
+              jeffwgr@gmail.com
             </a>
           </p>
         </section>

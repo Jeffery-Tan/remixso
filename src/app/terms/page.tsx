@@ -230,10 +230,10 @@ export default function TermsPage() {
             <br />
             Email:{" "}
             <a
-              href="mailto:legal@remixso.com"
+              href="mailto:jeffwgr@gmail.com"
               className="text-[var(--primary)] underline"
             >
-              legal@remixso.com
+              jeffwgr@gmail.com
             </a>
           </p>
         </section>

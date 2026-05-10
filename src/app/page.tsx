@@ -280,7 +280,7 @@ const faqs = [
   },
   {
     q: "Need help or have feedback?",
-    a: "Email us at support@remixso.com — we read every message and respond within 24 hours.",
+    a: "Email us at jeffwgr@gmail.com — we read every message and respond within 24 hours.",
   },
   {
     q: "Can I cancel anytime?",

@@ -8,7 +8,7 @@ export function Footer() {
         <div className="min-h-14 py-3 flex flex-wrap items-center justify-between gap-2 text-sm text-[var(--muted-foreground)]">
           <span>&copy; {new Date().getFullYear()} RemixSo</span>
           <div className="flex items-center gap-3 flex-wrap">
-            <a href="mailto:support@remixso.com" className="hover:underline">
+            <a href="mailto:jeffwgr@gmail.com" className="hover:underline">
               Contact
             </a>
             <Link href="/privacy" className="hover:underline">
