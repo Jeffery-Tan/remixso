@@ -286,7 +286,7 @@ Dashboard 结果 → 点某平台 "Refine"
 | Footer | "© 2026 RemixSo" · "Product" · "Built for creators" |
 | 产品名 | "RemixSo" |
 | 定位语 | "Stop rewriting. Start creating." |
-| 官网 URL | remixso.com |
+| 官网 URL | remixso.vercel.app |
 
 ### API 错误信息
 | 错误码 | 用户看到的信息 |

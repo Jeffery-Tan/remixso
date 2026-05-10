@@ -174,7 +174,7 @@ Free tier: 3 gens/month
 Pro: 100/month ($19) with unlimited AI refinements
 
 Not posting a link unless someone asks — just wanted to share the build.
-[If asked:] remixso.com
+[If asked:] remixso.vercel.app
 ```
 
 ### Indie Hackers
@@ -213,7 +213,7 @@ Ask me anything about:
 | 30-45 | 生成过程 | 点击 Generate，展示进度动画（保留 3-5 秒即可） |
 | 45-65 | 查看结果 | 切换各平台 tab，展示 Twitter 版、LinkedIn 版、Instagram 版的不同 |
 | 65-80 | Refine | 打开 RefineDrawer，选 "Make it punchier"，展示 before/after |
-| 80-90 | 结束卡 | 展示 remixso.com + Start for free — no credit card required |
+| 80-90 | 结束卡 | 展示 remixso.vercel.app + Start for free — no credit card required |
 
 ---
 

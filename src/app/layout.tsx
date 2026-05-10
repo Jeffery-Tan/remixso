@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { AnalyticsGate } from "@/components/analytics/AnalyticsGate";
 import "./globals.css";
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://remixso.com";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://remixso.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),

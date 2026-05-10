@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/dashboard/", "/account/"],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "https://remixso.com"}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "https://remixso.vercel.app"}/sitemap.xml`,
   };
 }
