@@ -180,7 +180,7 @@ Dashboard 结果 → 点某平台 "Refine"
 | Pricing Badge | "Pro Plan" |
 | Pricing 价格 | "$19/mo" |
 | Pricing 说明 | "7 days free trial · Cancel anytime" |
-| Pricing Feature 1 | "50 content generations per month" |
+| Pricing Feature 1 | "100 content generations per month" |
 | Pricing Feature 2 | "All 6 platforms included" |
 | Pricing Feature 3 | "URL auto-fetch for blog posts" |
 | Pricing Feature 4 | "Unlimited AI refinements" |

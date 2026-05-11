@@ -197,23 +197,19 @@ Ask me anything about:
 
 ---
 
-## 五、Demo 视频指南
+## 五、Demo GIF 指南
 
-**时长**：60-90 秒
-**格式**：横屏 16:9，建议 1080p
-**工具**：Screen Studio（推荐，自动平滑缩放）或用 OBS 免费录
+**决策**：不做完整视频——PH 截图是第一优先级，视频实际观看率很低。用一个短 GIF 替代即可。
 
-**分镜脚本：**
+**工具**：ScreenToGif（Windows 免费，screentogif.com）
 
-| 秒 | 画面 | 说明 |
-|---|------|------|
-| 0-5 | Logo + Tagline | 标题卡：RemixSo — Stop rewriting. Start creating. |
-| 5-15 | 首页 Hero | 展示 homepage，滚动到内联试用区 |
-| 15-30 | 粘贴内容 | 切换到 Dashboard，粘贴种子内容（选项 A），选中所有 6 个平台 |
-| 30-45 | 生成过程 | 点击 Generate，展示进度动画（保留 3-5 秒即可） |
-| 45-65 | 查看结果 | 切换各平台 tab，展示 Twitter 版、LinkedIn 版、Instagram 版的不同 |
-| 65-80 | Refine | 打开 RefineDrawer，选 "Make it punchier"，展示 before/after |
-| 80-90 | 结束卡 | 展示 remixso.vercel.app + Start for free — no credit card required |
+**录制流程**（15 秒以内）：
+1. 打开 Dashboard，贴好种子内容（选项 A）
+2. 选中所有 6 个平台 → 点 Generate
+3. 等待结果出来后快速切换几个平台 tab
+4. 停止录制 → 删掉多余帧 → 另存为 GIF（< 3MB）
+
+嵌在 PH 描述里即可。
 
 ---
 
@@ -221,7 +217,7 @@ Ask me anything about:
 
 ### 前一天
 - [ ] 5 张截图完成并上传到 PH
-- [ ] Demo 视频上传（PH 支持 YouTube/Vimeo 嵌入）
+- [ ] Demo GIF 制作并嵌入 PH 描述
 - [ ] PH 页面所有文案填入
 - [ ] 首条评论草稿准备好（上线后立即复制粘贴）
 - [ ] Maker 信息完善（Twitter/GitHub 链接）
