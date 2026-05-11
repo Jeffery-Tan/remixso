@@ -98,7 +98,7 @@ Features:
 → AI tone analysis preserves your writing voice
 → Refine any output with natural language (PRO)
 → Full history with load/save/delete
-→ Free tier: 3 generations/month across all platforms
+→ Free tier: 5 generations/month across all platforms
 → Pro: 100 generations/month + unlimited refinements
 → 7-day free trial, no credit card required
 
@@ -156,7 +156,7 @@ How it works:
 
 Stack: Next.js 16, DeepSeek v4, Supabase, Dodo Payments
 
-Free tier gives you 3 generations/month across all platforms. Pro is 100/month with unlimited refinements (7-day free trial).
+Free tier gives you 5 generations/month across all platforms. Pro is 100/month with unlimited refinements (7-day free trial).
 
 I'm a solo founder building this for myself first. Would love honest feedback from the HN crowd.
 ```
@@ -170,7 +170,7 @@ I built an AI tool that repurposes one article into 6 platform-optimized posts
 I had this exact problem, so I built RemixSo.
 
 Stack: Next.js 16 / DeepSeek v4 / Supabase
-Free tier: 3 gens/month
+Free tier: 5 gens/month
 Pro: 100/month ($19) with unlimited AI refinements
 
 Not posting a link unless someone asks — just wanted to share the build.
@@ -248,7 +248,7 @@ Ask me anything about:
 ## 七、定价与优惠策略
 
 **正常定价：**
-- Free：$0，3 次/月，全平台
+- Free：$0，5 次/月，全平台
 - Pro：$19/月，100 次/月 + 无限 refine
 
 **PH 专属优惠（可选）：**

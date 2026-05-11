@@ -8,6 +8,7 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { PlatformShowcase } from "@/components/home/PlatformShowcase";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PlatformIcon } from "@/components/icons/PlatformIcon";
+import { FREE_MONTHLY_LIMIT } from "@/lib/credit-manager";
 import { Sparkles, Mic, Share2, Pencil, Check, ClipboardPaste, Wand2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -30,7 +31,7 @@ const jsonLd = {
       name: "Starter",
       price: "0",
       priceCurrency: "USD",
-      description: "3 generations per month across all 6 platforms",
+      description: `${FREE_MONTHLY_LIMIT} generations per month across all 6 platforms`,
     },
     {
       "@type": "Offer",
@@ -160,7 +161,7 @@ export default function HomePage() {
                   <span className="text-sm text-[var(--on-surface-variant)] font-light">/mo</span>
                 </div>
                 <ul className="text-sm space-y-2.5 mb-8 text-left max-w-[240px] mx-auto">
-                  {["3 generations per month", "All 6 platforms included", "Voice analysis included"].map((item) => (
+                  {[`${FREE_MONTHLY_LIMIT} generations per month`, "All 6 platforms included", "Voice analysis included"].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check size={14} className="text-[var(--primary)] mt-0.5 shrink-0" />
                       <span>{item}</span>
@@ -264,7 +265,7 @@ const steps = [
 const faqs = [
   {
     q: "How does the free plan work?",
-    a: "Starter is permanently free with 3 generations per month across all 6 platforms. No credit card required. Upgrade to RemixSo Pro anytime for 100 generations/month and more features.",
+    a: `Starter is permanently free with ${FREE_MONTHLY_LIMIT} generations per month across all 6 platforms. No credit card required. Upgrade to RemixSo Pro anytime for 100 generations/month and more features.`,
   },
   {
     q: "Can I really keep my writing voice?",

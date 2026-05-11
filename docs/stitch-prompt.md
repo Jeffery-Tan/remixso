@@ -88,7 +88,7 @@ This is the main interaction page. It has many states — design each one.
 
 **Top Bar** — "Dashboard" title + CreditBadge (shows "Pro — unlimited" or "N free left").
 
-**Trial Banner (conditional)** — For anonymous users: "Free preview (1 generation). Sign in to get 3 free per month." For exhausted users: "You're out of free generations. Upgrade to Pro."
+**Trial Banner (conditional)** — For anonymous users: "Free preview (1 generation). Sign in to get 5 free per month." For exhausted users: "You're out of free generations. Upgrade to Pro."
 
 ### States
 
@@ -139,7 +139,7 @@ States:
 
 **Usage Card** (right side) — "Usage" + "This month's activity".
 
-- Free users: progress bar "N / 3" + "Free remaining"
+- Free users: progress bar "N / 5" + "Free remaining"
 - Pro users: "Unlimited generations with Pro"
 
 **Success Callback** — When URL has `?checkout=success`: banner "Syncing your subscription status..." (auto-refreshes). Error state: "Sync failed" + error detail.

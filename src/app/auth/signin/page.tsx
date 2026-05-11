@@ -107,7 +107,7 @@ function SignInContent() {
           {isSignUp && mode === "password" ? "Create account" : "Sign in to RemixSo"}
         </h1>
         <p className="text-[var(--muted-foreground)] text-sm">
-          Get 3 free generations per month.
+          Get 5 free generations per month.
         </p>
 
         {/* Google */}

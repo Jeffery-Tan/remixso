@@ -70,7 +70,7 @@
 | **未订阅** | Subscription 卡片显示 "RemixSo Pro" + "Inactive" badge + $19/月说明 + "Subscribe to Pro" 按钮 |
 | **试用中** | "Pro" + "Trial Active" badge + 试用到期日 + 剩余天数 + "Manage Subscription" |
 | **已订阅** | "Pro" + "Active" badge + 下期账单日 + "Manage Subscription" |
-| **右侧用量卡片** | 未订阅显示进度条（x/3）+ "Free remaining"；已订阅显示 "Unlimited generations with Pro" |
+| **右侧用量卡片** | 未订阅显示进度条（x/5）+ "Free remaining"；已订阅显示 "Unlimited generations with Pro" |
 | **付款成功回调** | `?checkout=success` 参数时显示 "Syncing..." 横幅，同步完成后自动刷新 |
 
 **可能的错误状态：** 同步失败时显示错误信息。
@@ -82,7 +82,7 @@
 | 区块 | 状态 | 内容 |
 |------|------|------|
 | **顶部栏** | 通用 | "Dashboard" 标题 + CreditBadge（Pro unlimited / x free left） |
-| **试用横幅** | 未订阅/匿名 | "Free preview (1 generation). Sign in to get 3." 或 "You're out of free generations. Upgrade to Pro" |
+| **试用横幅** | 未订阅/匿名 | "Free preview (1 generation). Sign in to get 5." 或 "You're out of free generations. Upgrade to Pro" |
 | **空白引导** | idle + 无内容时 | 编辑图标 + "Ready to remix your content?" + 4 个快速填充词（article/blog post/newsletter/essay） |
 | **输入模式切换** | 通用 | "Paste text" / "Paste URL" 两个 tab |
 | **文本输入** | text 模式 | Title（可选）+ 正文 Textarea（max 5000 字）+ 字数计数器 |
@@ -232,7 +232,7 @@ Dashboard 结果 → 点某平台 "Refine"
 | 用量卡片标题 | "Usage" |
 | 用量卡片副标题 | "This month's activity" |
 | Pro 用量 | "Unlimited generations with Pro" |
-| 免费用量 | "[n] / 3" + "Free remaining" |
+| 免费用量 | "[n] / 5" + "Free remaining" |
 | 同步中横幅 | "Syncing your subscription status..." |
 | 同步失败 | "Sync failed" + 错误详情 |
 
@@ -242,7 +242,7 @@ Dashboard 结果 → 点某平台 "Refine"
 | 标题 | "Dashboard" |
 | CreditBadge Pro | "Pro — unlimited" |
 | CreditBadge 免费 | "[n] free left" |
-| 试用横幅（匿名） | "Free preview (1 generation). Sign in to get 3 free per month. [Sign in]" |
+| 试用横幅（匿名） | "Free preview (1 generation). Sign in to get 5 free per month. [Sign in]" |
 | 试用横幅（用尽） | "You're out of free generations. [Upgrade to Pro for $19/month]" |
 | 空白引导标题 | "Ready to remix your content?" |
 | 空白引导说明 | "Paste your long-form text or a blog URL, pick your platforms, and let AI do the rest." |

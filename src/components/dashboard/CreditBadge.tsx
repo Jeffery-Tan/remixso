@@ -68,7 +68,7 @@ export function TrialBanner() {
       <div className="p-4 rounded-lg border border-[var(--border)] bg-[var(--muted)]/30 text-sm">
         <span className="font-medium">Free preview (1 generation).</span>{" "}
         <span className="text-[var(--muted-foreground)]">
-          Sign in to get 3 free per month.{" "}
+          Sign in to get 5 free per month.{" "}
         </span>
         <a
           href="/auth/signin"
