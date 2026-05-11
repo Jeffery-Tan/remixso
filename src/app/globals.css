@@ -37,6 +37,9 @@
     --on-error-container: #93000a;
     --surface-bright: #ffffff;
 
+    --pro-card-surface: #191c1e;
+    --pro-card-accent: #eaddff;
+
     --font-sans: "Inter", system-ui, sans-serif;
     --font-headline: "Epilogue", system-ui, sans-serif;
   }
@@ -72,6 +75,9 @@
     --primary-foreground: #ffffff;
     --error-container: #410002;
     --on-error-container: #ffdad6;
+
+    --pro-card-surface: #1a1535;
+    --pro-card-accent: #d2bbff;
   }
 
   html {

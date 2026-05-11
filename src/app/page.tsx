@@ -175,7 +175,7 @@ export default function HomePage() {
             {/* Pro */}
             <RevealOnScroll delay={150}>
               <Card className="relative rounded-3xl text-white border-[var(--primary)]/20 transform md:scale-105 z-10 hover:-translate-y-1 hover:shadow-[0_0_60px_-10px_rgba(124,58,237,0.5)] transition-all duration-300"
-                style={{ background: "var(--foreground)", boxShadow: "0 0 40px -10px rgba(124, 58, 237, 0.3)" }}>
+                style={{ background: "var(--pro-card-surface)", boxShadow: "0 0 40px -10px rgba(124, 58, 237, 0.3)" }}>
                 <div className="absolute top-0 right-8 -translate-y-1/2">
                   <Badge className="bg-[var(--primary)] text-white text-[10px] uppercase tracking-widest border border-[var(--primary-fixed-dim)]/30">Most Popular</Badge>
                 </div>
@@ -188,7 +188,7 @@ export default function HomePage() {
                 <ul className="text-sm space-y-2.5 mb-8 text-left max-w-[260px] mx-auto">
                   {[`${PRO_MONTHLY_LIMIT} generations/month`, "All 6 platforms included", "URL auto-fetch for blog posts", "Unlimited AI refinements", "Keep your unique writing voice"].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <Check size={14} className="text-[var(--primary-fixed)] mt-0.5 shrink-0" />
+                      <Check size={14} className="text-[var(--pro-card-accent)] mt-0.5 shrink-0" />
                       <span className="text-white/90">{item}</span>
                     </li>
                   ))}
