@@ -8,7 +8,7 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { PlatformShowcase } from "@/components/home/PlatformShowcase";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PlatformIcon } from "@/components/icons/PlatformIcon";
-import { FREE_MONTHLY_LIMIT } from "@/lib/credit-manager";
+import { FREE_MONTHLY_LIMIT, PRO_MONTHLY_LIMIT } from "@/lib/credit-manager";
 import { Sparkles, Mic, Share2, Pencil, Check, ClipboardPaste, Wand2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ const jsonLd = {
       name: "Pro",
       price: "19",
       priceCurrency: "USD",
-      description: "100 generations/month with unlimited AI refinements",
+      description: `${PRO_MONTHLY_LIMIT} generations/month with unlimited AI refinements`,
     },
   ],
 };
@@ -186,7 +186,7 @@ export default function HomePage() {
                   <span className="text-sm text-white/60 font-light">/mo</span>
                 </div>
                 <ul className="text-sm space-y-2.5 mb-8 text-left max-w-[260px] mx-auto">
-                  {["100 generations/month", "All 6 platforms included", "URL auto-fetch for blog posts", "Unlimited AI refinements", "Keep your unique writing voice"].map((item) => (
+                  {[`${PRO_MONTHLY_LIMIT} generations/month`, "All 6 platforms included", "URL auto-fetch for blog posts", "Unlimited AI refinements", "Keep your unique writing voice"].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check size={14} className="text-[var(--primary-fixed)] mt-0.5 shrink-0" />
                       <span className="text-white/90">{item}</span>
@@ -265,7 +265,7 @@ const steps = [
 const faqs = [
   {
     q: "How does the free plan work?",
-    a: `Starter is permanently free with ${FREE_MONTHLY_LIMIT} generations per month across all 6 platforms. No credit card required. Upgrade to RemixSo Pro anytime for 100 generations/month and more features.`,
+    a: `Starter is permanently free with ${FREE_MONTHLY_LIMIT} generations per month across all 6 platforms. No credit card required. Upgrade to RemixSo Pro anytime for ${PRO_MONTHLY_LIMIT} generations/month and more features.`,
   },
   {
     q: "Can I really keep my writing voice?",

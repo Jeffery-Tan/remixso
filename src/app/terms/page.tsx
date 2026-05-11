@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/Container";
+import { PRO_MONTHLY_LIMIT } from "@/lib/credit-manager";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -73,7 +74,7 @@ export default function TermsPage() {
             published on our pricing page and may change with notice.
           </p>
           <p className="mt-1">
-            <strong>RemixSo Pro ($19/month):</strong> includes 100 generations
+            <strong>RemixSo Pro ($19/month):</strong> includes {PRO_MONTHLY_LIMIT} generations
             per month, URL auto-fetch, unlimited AI refinements, and priority
             access to new features. Billed monthly via Dodo Payments. A 7-day free
             trial is available for new subscribers.
