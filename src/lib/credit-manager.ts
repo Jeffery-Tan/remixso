@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/server";
 
 // 额度配置
-export const FREE_MONTHLY_LIMIT = 3;
+export const FREE_MONTHLY_LIMIT = 5;
 export const PRO_MONTHLY_LIMIT = 100;
 export const ANONYMOUS_LIFETIME_LIMIT = 1;
 
