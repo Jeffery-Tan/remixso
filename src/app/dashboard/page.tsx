@@ -1,15 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Workspace } from "@/components/dashboard/Workspace";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-
-// Dashboard 主页 —— 侧边栏 + 工作区 / 历史记录
+import { useToast } from "@/components/ui/Toast";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"workspace" | "history">("workspace");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { addToast } = useToast();
+  const showed = useRef(false);
+
+  useEffect(() => {
+    if (showed.current) return;
+    const refApplied = searchParams.get("ref_applied");
+    if (!refApplied) return;
+    showed.current = true;
+
+    if (refApplied !== "0") {
+      addToast(`You got ${refApplied} extra free generations! Invite others to earn more.`, "success");
+    } else {
+      addToast("You've already been referred. Visit the Account page to invite others and earn more free generations!", "info");
+    }
+
+    // 清除 URL 参数
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("ref_applied");
+    const newUrl = params.toString()
+      ? `/dashboard?${params.toString()}`
+      : "/dashboard";
+    router.replace(newUrl);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] relative">

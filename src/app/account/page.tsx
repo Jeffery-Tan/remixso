@@ -9,6 +9,7 @@ import {
 } from "@/components/account/AccountActions";
 import { DeleteAccountButton } from "@/components/account/DeleteAccountButton";
 import { CheckoutSuccessSync } from "@/components/account/CheckoutSuccessSync";
+import { ReferralCard } from "@/components/account/ReferralCard";
 import { redirect } from "next/navigation";
 import { FREE_MONTHLY_LIMIT, PRO_MONTHLY_LIMIT } from "@/lib/credit-manager";
 
@@ -260,6 +261,11 @@ export default async function AccountPage({
               </span>
             </div>
           </section>
+        </div>
+
+        {/* 邀请裂变 */}
+        <div className="mt-6">
+          <ReferralCard />
         </div>
 
         {/* 删除账号 */}

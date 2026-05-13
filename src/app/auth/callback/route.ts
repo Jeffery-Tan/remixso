@@ -1,9 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
+import { applyReferralCode } from "@/lib/referral";
 import { NextResponse } from "next/server";
-
-// 认证回调 —— OAuth + Magic Link 共用
-// OAuth: Supabase 带着 code 参数重定向到此
-// Magic Link: Supabase 带着 token_hash + type 参数重定向到此
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -22,6 +19,40 @@ export async function GET(request: Request) {
     });
   }
 
+  // 自动兑换邀请码（从 cookie 读取）
+  let refApplied = "";
+  const refCookie = request.headers.get("cookie")?.match(/(?:^|;\s*)remixso-ref=([^;]*)/)?.[1];
+
+  if (refCookie) {
+    const refCode = decodeURIComponent(refCookie);
+
+    // 获取刚建立的 session 的用户 ID
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const result = await applyReferralCode(user.id, refCode);
+      refApplied = result.success
+        ? `ref_applied=${result.bonusAwarded}`
+        : "ref_applied=0";
+    }
+  }
+
   const redirectTo = searchParams.get("next") ?? `${origin}/dashboard`;
-  return NextResponse.redirect(redirectTo);
+  const separator = redirectTo.includes("?") ? "&" : "?";
+
+  const response = NextResponse.redirect(
+    new URL(`${redirectTo}${refApplied ? `${separator}${refApplied}` : ""}`, request.url)
+  );
+
+  // 清除 ref cookie
+  if (refCookie) {
+    response.headers.set(
+      "Set-Cookie",
+      "remixso-ref=; path=/; max-age=0; SameSite=Lax"
+    );
+  }
+
+  return response;
 }

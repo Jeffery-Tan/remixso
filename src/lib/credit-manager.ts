@@ -5,6 +5,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 export const FREE_MONTHLY_LIMIT = 5;
 export const PRO_MONTHLY_LIMIT = 100;
 export const ANONYMOUS_LIFETIME_LIMIT = 1;
+export const REFERRAL_BONUS_AMOUNT = 3;
 
 // 检查积分是否够用（原子操作，防竞态）
 export async function checkAndDeductCredit(
@@ -36,9 +37,11 @@ export async function checkAndDeductCredit(
     // 查当前用量（可能没有行——新用户首次生成）
     const { data: credits } = await supabase
       .from("usage_credits")
-      .select("free_generations_used, free_reset_at")
+      .select("free_generations_used, free_reset_at, bonus_generations")
       .eq("user_id", userId)
       .single();
+
+    const monthlyLimitBonus = (credits?.bonus_generations ?? 0) + monthlyLimit;
 
     if (!credits) {
       // 新用户：首次生成，INSERT 初始行
@@ -60,7 +63,7 @@ export async function checkAndDeductCredit(
       // INSERT 失败（并发冲突），重试读取
       const { data: retry } = await supabase
         .from("usage_credits")
-        .select("free_generations_used, free_reset_at")
+        .select("free_generations_used, free_reset_at, bonus_generations")
         .eq("user_id", userId)
         .single();
 
@@ -68,7 +71,8 @@ export async function checkAndDeductCredit(
         return { allowed: false, remaining: 0, isSubscribed };
       }
       const retryUsed = retry.free_generations_used ?? 0;
-      if (retryUsed >= monthlyLimit) {
+      const retryLimit = (retry.bonus_generations ?? 0) + monthlyLimit;
+      if (retryUsed >= retryLimit) {
         return { allowed: false, remaining: 0, isSubscribed };
       }
       // 乐观锁递增
@@ -85,7 +89,7 @@ export async function checkAndDeductCredit(
       }
       return {
         allowed: true,
-        remaining: monthlyLimit - (retryUsed + 1),
+        remaining: retryLimit - (retryUsed + 1),
         isSubscribed,
       };
     }
@@ -97,7 +101,7 @@ export async function checkAndDeductCredit(
     let currentUsed = credits.free_generations_used ?? 0;
 
     if (now >= currentResetAt) {
-      // 重置：将已用归零，设置新的重置日期
+      // 重置：将已用归零，设置新的重置日期（bonus 不重置）
       const { data: resetLocked } = await supabase
         .from("usage_credits")
         .update({
@@ -114,12 +118,12 @@ export async function checkAndDeductCredit(
       }
       return {
         allowed: true,
-        remaining: monthlyLimit - 1,
+        remaining: monthlyLimitBonus - 1,
         isSubscribed,
       };
     }
 
-    const remaining = monthlyLimit - currentUsed;
+    const remaining = monthlyLimitBonus - currentUsed;
     if (remaining <= 0) {
       return { allowed: false, remaining: 0, isSubscribed };
     }
@@ -139,7 +143,7 @@ export async function checkAndDeductCredit(
 
     return {
       allowed: true,
-      remaining: monthlyLimit - (currentUsed + 1),
+      remaining: monthlyLimitBonus - (currentUsed + 1),
       isSubscribed,
     };
   }
@@ -211,6 +215,7 @@ export async function getCreditInfo(
   freeRemaining: number;
   isSubscribed: boolean;
   freeResetAt: string | null;
+  bonusGenerations: number;
 }> {
   const supabase = createServiceClient();
 
@@ -221,6 +226,7 @@ export async function getCreditInfo(
       freeRemaining: ANONYMOUS_LIFETIME_LIMIT,
       isSubscribed: false,
       freeResetAt: null,
+      bonusGenerations: 0,
     };
   }
 
@@ -229,11 +235,12 @@ export async function getCreditInfo(
 
   const { data: credits } = await supabase
     .from("usage_credits")
-    .select("free_generations_used, free_reset_at")
+    .select("free_generations_used, free_reset_at, bonus_generations")
     .eq(column, value)
     .single();
 
   const freeUsed = credits?.free_generations_used ?? 0;
+  const bonusGenerations = credits?.bonus_generations ?? 0;
 
   // 检查订阅状态
   let isSubscribed = false;
@@ -249,11 +256,11 @@ export async function getCreditInfo(
       subscription?.status === "trialing";
   }
 
-  const freeTotal = isSubscribed
+  const freeTotal = (isSubscribed
     ? PRO_MONTHLY_LIMIT
     : userId
       ? FREE_MONTHLY_LIMIT
-      : ANONYMOUS_LIFETIME_LIMIT;
+      : ANONYMOUS_LIFETIME_LIMIT) + bonusGenerations;
 
   return {
     freeTotal,
@@ -261,5 +268,6 @@ export async function getCreditInfo(
     freeRemaining: Math.max(0, freeTotal - freeUsed),
     isSubscribed,
     freeResetAt: credits?.free_reset_at ?? null,
+    bonusGenerations,
   };
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -6,6 +7,7 @@ import { CookieBanner } from "@/components/ui/CookieBanner";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { AnalyticsGate } from "@/components/analytics/AnalyticsGate";
+import { RefCookieSetter } from "@/components/referral/RefCookieSetter";
 import "./globals.css";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://remixso.vercel.app";
@@ -91,6 +93,9 @@ export default function RootLayout({
               <Header />
               <main id="main-content" className="flex-1">{children}</main>
               <Footer />
+              <Suspense fallback={null}>
+                <RefCookieSetter />
+              </Suspense>
               <CookieBanner />
               <AnalyticsGate />
             </ToastProvider>

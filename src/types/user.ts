@@ -34,4 +34,5 @@ export interface CreditInfo {
   freeRemaining: number;
   isSubscribed: boolean;
   freeResetAt: string | null;
+  bonusGenerations: number;
 }

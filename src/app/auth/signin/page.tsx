@@ -5,6 +5,16 @@ import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; path=/; max-age=0`;
+}
+
 // 登录页 —— Google OAuth + Email (Magic Link / Password)
 
 function SignInContent() {
@@ -61,7 +71,25 @@ function SignInContent() {
           password,
         });
         if (error) throw error;
-        window.location.href = "/dashboard";
+
+        // 自动兑换邀请码（email+password 登录不走 callback，需客户端处理）
+        const refCode = getCookie("remixso-ref");
+        let refParam = "";
+        if (refCode) {
+          try {
+            const res = await fetch("/api/referral/apply", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ code: refCode }),
+            });
+            const data = await res.json();
+            refParam = data.bonusAwarded ? "?ref_applied=3" : "?ref_applied=0";
+            deleteCookie("remixso-ref");
+          } catch {
+            deleteCookie("remixso-ref");
+          }
+        }
+        window.location.href = "/dashboard" + refParam;
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
