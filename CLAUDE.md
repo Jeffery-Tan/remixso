@@ -109,7 +109,7 @@ src/providers/
 4. 前端 `/account?checkout=success` 时调用 `POST /api/sync-subscription` 同步状态
 5. 取消订阅通过 `POST /api/create-portal-session` 跳转 Dodo 管理门户
 
-**当前状态（2026-05-10）**：Dodo KYC 审核通过，已切换到 live_mode。
+**当前状态（2026-05-13）**：Dodo KYC 通过 + live_mode，已发布 Product Hunt，裂变邀请系统已上线。
 
 ## 深入文档
 

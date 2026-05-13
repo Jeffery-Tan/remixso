@@ -89,9 +89,12 @@ src/
 │   ├── auth/               # Auth callback & signin page
 │   ├── dashboard/          # Main workspace
 │   ├── account/            # User account management
+│   │   └── referral/        # Invite codes & auto-apply
 │   └── product/            # Product landing page
 ├── components/
 │   ├── dashboard/          # Workspace, OutputCard, HistoryPanel, etc.
+│   ├── account/            # Account actions, ReferralCard
+│   ├── referral/           # RefCookieSetter, RefAutoApply, ReferralBanner
 │   ├── layout/             # Header, Footer, Container
 │   └── ui/                 # Shared primitives (Button, Dialog, Toast, etc.)
 ├── lib/
@@ -100,6 +103,7 @@ src/
 │   ├── content/            # URL fetcher + HTML extraction
 │   ├── dodo.ts             # Dodo Payments SDK wrapper
 │   ├── credit-manager.ts   # Usage tracking with optimistic locking
+│   ├── referral.ts         # Referral logic: applyReferralCode + addBonus
 │   └── rate-limit.ts       # In-memory rate limiting
 ├── store/                  # Zustand stores (generation, history)
 ├── providers/              # Auth context provider
@@ -112,8 +116,20 @@ src/
 |----------|--------|------|------------|-------------|
 | `/api/generate` | POST | Optional | 5/min | AI content repurposing across platforms |
 | `/api/refine` | POST | Optional | 10/min | Edit a single platform output |
+| `/api/retry-platform` | POST | Optional | — | Retry a failed platform generation |
 | `/api/fetch-url` | POST | Optional | 10/min | Extract text content from a URL |
 | `/api/history` | GET/DELETE | Required | — | List or delete generation history |
+| `/api/history/[id]` | DELETE | Required | — | Delete a single history entry (ownership check) |
+| `/api/user` | GET | Required | — | Current user info |
+| `/api/user/credits` | GET | Optional | — | Credits and subscription status |
+| `/api/create-checkout-session` | POST | Required | — | Dodo Payments checkout |
+| `/api/create-portal-session` | POST | Required | — | Dodo customer portal |
+| `/api/sync-subscription` | POST | Required | — | Sync subscription status from Dodo |
+| `/api/webhooks/dodo` | POST | — | — | Dodo webhook (9 event types) |
+| `/api/account/delete` | DELETE | Required | — | Delete user account |
+| `/api/referral/generate-code` | POST | Required | — | Generate unique invite code |
+| `/api/referral/apply` | POST | Required | — | Redeem invite code, both get +3 bonus |
+| `/api/referral/stats` | GET | Required | — | Referral code, invite count, bonus earned |
 
 ### Error Codes
 
