@@ -159,7 +159,7 @@ export function RefineDrawer() {
 
         {/* 可滚动内容 */}
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
-          {preRefineContent ? (
+          {preRefineContent && !isRefining ? (
             <>
               {/* Refine 完成 —— 前后对比 */}
               <section>
@@ -289,7 +289,7 @@ export function RefineDrawer() {
             </div>
           )}
           <div className="flex gap-3">
-            {preRefineContent ? (
+            {preRefineContent && !isRefining ? (
               <Button
                 onClick={cancelRefine}
                 className="flex-1 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] glow-purple-sm"
