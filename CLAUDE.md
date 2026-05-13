@@ -55,6 +55,9 @@ AI content repurposing tool — turn one article into platform-optimized posts f
 | `/api/webhooks/dodo` | POST | — | — | Dodo Webhook（9 种事件） |
 | `/api/user` | GET | Required | — | 用户信息 |
 | `/api/user/credits` | GET | Optional | — | 积分和订阅状态查询 |
+| `/api/referral/generate-code` | POST | Required | — | 生成 8 位唯一邀请码（幂等） |
+| `/api/referral/apply` | POST | Required | — | 兑换邀请码，双方 +3 bonus 额度 |
+| `/api/referral/stats` | GET | Required | — | 邀请数据：邀请码、已邀请人数、累计奖励 |
 | `/api/account/delete` | DELETE | Required | — | 账户删除 |
 
 ## 关键模块
@@ -64,16 +67,20 @@ src/lib/
 ├── dodo.ts              # Dodo Payments SDK 封装
 ├── deepseek/
 │   ├── client.ts        # DeepSeek API 客户端
-│   ├── analyzer.ts      # 语气分析（1 次调用）
-│   ├── pipeline.ts      # 生成流水线编排
-│   └── prompts/         # 各平台 system prompt
+│   ├── pipeline.ts      # 生成流水线编排（含语气分析）
+│   └── prompts/         # 各平台 system prompt + 语气分析 prompt
 ├── supabase/
 │   ├── server.ts        # createClient / createServiceClient
 │   └── client.ts        # 浏览器端 Supabase client
 ├── content/
 │   └── fetcher.ts       # URL 内容抓取 + HTML 解析
 ├── credit-manager.ts    # 积分检查/扣减（原子操作 + 乐观锁）
+├── referral.ts          # 裂变邀请：applyReferralCode + addBonus
 └── rate-limit.ts        # 内存限流（单实例可用，多实例需 Redis）
+
+src/components/referral/
+├── RefCookieSetter.tsx   # 检测 ?ref= 参数 → 存 cookie（挂载 root layout）
+└── RefAutoApply.tsx      # 已登录用户自动兑换 cookie 中的邀请码
 
 src/store/
 ├── generation-store.ts  # 生成状态 + per-platform 状态追踪
@@ -91,6 +98,8 @@ src/providers/
 - 订阅状态 enum：`active` / `trialing` / `past_due` / `canceled` / `inactive` / `expired` / `paused`
 - 额度用 `used_count` 列 + 乐观锁（`LIMIT 1` + `RETURNING`）防竞态
 - 新用户首次扣减时自动 INSERT 初始行
+- `profiles.referral_code`（唯一 8 位邀请码）+ `referred_by`（邀请人）、`usage_credits.bonus_generations`（裂变奖励，不随月度重置）
+- 裂变奖励有效额度 = `monthlyLimit + bonusGenerations`，常量 `REFERRAL_BONUS_AMOUNT = 3`
 
 ## 支付流（Dodo Payments）
 
@@ -109,6 +118,6 @@ src/providers/
 | `docs/design-handoff.md` | 完整 UI 规格——页面结构、组件清单、所有文案、状态矩阵、设计 token |
 | `docs/prompt-reference.md` | 6 个平台的 System Prompt 全文 + User Message 模板 + 跨平台对比表 |
 | `docs/stitch-prompt.md` | 给 Stitch 设计工具的 prompt——约束、设计 token、各页面要求 |
-| `docs/launch/product-hunt-launch.md` | 冷启动素材包——截图清单、种子内容、PH 文案、发帖草稿、视频脚本 |
+| `docs/launch/product-hunt-launch.md` | 冷启动素材包——截图清单、种子内容、PH 文案、发帖草稿、Demo GIF 指南、上线检查清单 |
 | `README.md` | 项目概览、安装步骤、API 端点表、错误码 |
 | `.env.local.example` | 环境变量清单（含说明注释） |
