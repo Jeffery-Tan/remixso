@@ -177,7 +177,31 @@ Not posting a link unless someone asks — just wanted to share the build.
 [If asked:] remixso.vercel.app
 ```
 
-### Indie Hackers
+### X / Twitter（个人号，PH 发布后立即发）
+
+```
+🚀 Just launched my first Product Hunt: RemixSo
+
+The problem: I wrote long-form articles but never repurposed them to social. Rewriting the same ideas for 6 platforms was too much work. So I just… didn't.
+
+What I built: Paste one article → AI rewrites it for X, LinkedIn, Instagram, TikTok, YouTube Shorts, and newsletter. Keeps your voice, changes the format.
+
+Stack: Next.js 16 + DeepSeek v4 + Supabase
+Free tier: 5 generations/month
+Pro: 100/month with unlimited refinements ($19, 7-day free trial)
+
+Try it: remixso.vercel.app
+PH page: producthunt.com/posts/remixso
+
+If you're a solo creator juggling platforms, I'd love to hear what you think. I'm here all day.
+```
+
+**配图 Prompt**（1200×630，4:3 横版）：
+```
+A clean modern UI card mockup with the title "One Article → 6 Platform Posts" showing 6 stylized social media icons (X, LinkedIn, Instagram, TikTok, YouTube, email) radiating outward from a single document icon in the center. The icons are connected by subtle gradient lines. Dark background with violet/purple accents (#7c3aed). Minimalist SaaS aesthetic, no text other than the title. High contrast, clean shadows, 3D isometric perspective. Professional product launch visual.
+```
+
+配图用 DALL-E 3 或 Midjourney 生成，1200×630 也同时用作 PH 页面的 Twitter Card 图。
 ```
 Title: I built an AI content repurposer because rewriting sucks
 
@@ -201,13 +225,22 @@ Ask me anything about:
 
 **决策**：不做完整视频——PH 截图是第一优先级，视频实际观看率很低。用一个短 GIF 替代即可。
 
+**录制策略**：预生成 + 录回放。生成 6 个平台要几分钟，不可能实时录进 15 秒 GIF。标准做法是提前跑完生成，录制时从 History 加载已有结果，全程即时响应。
+
 **工具**：ScreenToGif（Windows 免费，screentogif.com）
 
-**录制流程**（15 秒以内）：
+**准备工作**（录之前做，不限时）：
 1. 打开 Dashboard，贴好种子内容（选项 A）
 2. 选中所有 6 个平台 → 点 Generate
-3. 等待结果出来后快速切换几个平台 tab
-4. 停止录制 → 删掉多余帧 → 另存为 GIF（< 3MB）
+3. 等几分钟生成完成，确认结果没问题
+
+**录制流程**（15 秒以内）：
+1. 清空页面，刷新到初始状态
+2. 贴种子内容 → 选平台 → 点 Generate（1-2 秒，立刻切下一步）
+3. 打开 History Panel → 点击 Load 加载预生成的那条结果（结果瞬间出现）
+4. 快速切换 2-3 个平台 tab，展示不同平台的输出
+5. 可选：打开 RefineDrawer，输入一条指令展示 Refine 功能
+6. 停止录制 → 删掉多余帧 → 另存为 GIF（< 3MB）
 
 嵌在 PH 描述里即可。
 
@@ -224,7 +257,7 @@ Ask me anything about:
 - [ ] 确保生产环境稳定（跑一遍核心流程）
 - [ ] 提前告诉朋友/支持者上线日期和时间
 
-### 上线当天（建议北京时间周二 15:00 = 美西周一 00:01）
+### 上线当天（北京时间周三 15:00 = 美西 00:01 PDT）
 - [ ] 凌晨发布 PH（PH 按 UTC 重置，早发布有机会拿到更多票）
 - [ ] 立即发布首条评论
 - [ ] 在 PH 评论区积极回复每一条
