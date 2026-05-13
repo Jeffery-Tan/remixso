@@ -8,6 +8,7 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { AnalyticsGate } from "@/components/analytics/AnalyticsGate";
 import { RefCookieSetter } from "@/components/referral/RefCookieSetter";
+import { ReferralBanner } from "@/components/referral/ReferralBanner";
 import "./globals.css";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://remixso.vercel.app";
@@ -91,6 +92,9 @@ export default function RootLayout({
           <AuthProvider>
             <ToastProvider>
               <Header />
+              <Suspense fallback={null}>
+                <ReferralBanner />
+              </Suspense>
               <main id="main-content" className="flex-1">{children}</main>
               <Footer />
               <Suspense fallback={null}>
