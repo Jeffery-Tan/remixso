@@ -82,25 +82,11 @@ RemixSo 解决的就是这个：一篇长文粘贴进来，选好平台，AI 自
 Turn one article into 6 platform-perfect posts in seconds.
 ```
 
-### Description
+### Description（500 字符以内）
 ```
-RemixSo is an AI content repurposing tool for solo creators.
+AI content repurposing for solo creators. Paste one article, get 6 platform-perfect posts — X, LinkedIn, Instagram, TikTok, YouTube Shorts, and email. AI preserves your writing voice while adapting formats for each platform.
 
-Paste a blog post, article, or newsletter — pick X, LinkedIn, Instagram, TikTok, YouTube Shorts, or email — and get platform-optimized posts that keep your voice but speak each platform's native language.
-
-Why it matters:
-• 200M+ creators worldwide. Nearly half work alone.
-• Most default to one platform because rewriting for 6 takes hours.
-• RemixSo does it in seconds.
-
-Features:
-→ 6 platforms supported (X, LinkedIn, Instagram, TikTok, YouTube Shorts, Newsletter)
-→ AI tone analysis preserves your writing voice
-→ Refine any output with natural language (PRO)
-→ Full history with load/save/delete
-→ Free tier: 5 generations/month across all platforms
-→ Pro: 100 generations/month + unlimited refinements
-→ 7-day free trial, no credit card required
+Free: 5 generations/month. Pro: 100/month + unlimited refinements ($19, 7-day trial). No credit card to start.
 
 Built by a solo founder, for solo creators.
 ```
